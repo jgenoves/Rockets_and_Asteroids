@@ -102,7 +102,7 @@ void displayGame(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 //draw objects
-    myCircle.draw();
+    //myCircle.draw();
     p1.draw();
 }
 void displayEnd(){}
@@ -178,17 +178,80 @@ void kbd(unsigned char key, int x, int y) {
 void kbdS(int key, int x, int y) {
     if (screen == game) {
         switch (key) {
-            case GLUT_KEY_DOWN:
+           /* case GLUT_KEY_DOWN:
                 myRectangle.move(0, 30);
+                if (myRectangle.getCenter().y > height-20){
+                    myRectangle.setPoint(myRectangle.getCenter().x, height-20);
+                }
+
+                for (int i = 0;i<stars2.size();i++){
+                    stars2[i].move(0, stars2[i].getRadius());
+                    if (stars2[i].getCenter().y > height){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x > width){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(0, stars2[i].getCenter().y);
+                    }
+                }
+
                 break;
+                */
             case GLUT_KEY_LEFT:
-                myRectangle.move(-30, 0);
+
+                myRectangle.rotate(15);
+                //myRectangle.move(-20, 0);
+                if (myRectangle.getCenter().x < 0){
+                    myRectangle.setPoint(width, myRectangle.getCenter().y);
+                }
+                for (int i = 0;i<stars2.size();i++){
+                    stars2[i].move(stars2[i].getRadius()*2,0);
+                    if (stars2[i].getCenter().y > height){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x > width){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(0, stars2[i].getCenter().y);
+                    }
+                }
                 break;
             case GLUT_KEY_RIGHT:
-                myRectangle.move(30, 0);
+                //myRectangle.move(30,0);
+                myRectangle.rotate(15);
+                if (myRectangle.getCenter().x > width){
+                    myRectangle.setPoint(0, myRectangle.getCenter().y);
+                }
+                for (int i = 0;i<stars2.size();i++){
+                    stars2[i].move(-(stars2[i].getRadius())*2,0);
+                    if (stars2[i].getCenter().y > height){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x < 0){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(width, stars2[i].getCenter().y);
+                    }
+                }
                 break;
             case GLUT_KEY_UP:
-                myRectangle.move(0, -30);
+                myRectangle.move(0, -20);
+                if (myRectangle.getCenter().y < height/2+40){
+                    myRectangle.setPoint(myRectangle.getCenter().x, height/2+40);
+                }
+                p1.move(0,30);
+                for (int i = 0;i<stars2.size();i++){
+                    stars2[i].move(0, stars2[i].getRadius()*2);
+                    if (stars2[i].getCenter().y > height){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x > width){
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(0, stars2[i].getCenter().y);
+                    }
+                }
                 break;
         }
     }
