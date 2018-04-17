@@ -97,6 +97,8 @@ void displayGame(){
         stars2[i].draw();
     }
     myRectangle.draw();
+    p2.draw();
+    p1.draw();
 
     // Draw words
     string message = "$: ";
@@ -112,11 +114,19 @@ void displayGame(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
+    int score = 0;
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(365,50);
+    for (int i: score) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
 
     //draw objects
     //myCircle.draw();
-    p1.draw();
-    p2.draw();
+
+
 }
 void displayEnd(){}
 
@@ -250,7 +260,9 @@ void kbdS(int key, int x, int y) {
                 break;
             case GLUT_KEY_UP:
                 myRectangle.move(0, -20);
-                score = score +f;
+
+                p2.move(0,10);
+                score = score + myRectangle.getCenter().y;
                 glColor3f(1.0, 1.0, 0.0);
                 glRasterPos2i(365,50);
                     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, score);
@@ -268,7 +280,7 @@ void kbdS(int key, int x, int y) {
                         //stars is moving off the bottom of the screen, which is bad
                         stars2[i].setPoint(0, stars2[i].getCenter().y);
                     }
-                p2.move(0,5);
+
                 }
                 break;
         }
