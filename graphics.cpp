@@ -15,7 +15,7 @@ GLdouble width, height;
 int wd;
 mode screen;
 Rect myRectangle;
-Circle myCircle, c1, c2, c3, p1;
+Circle myCircle, c1, c2, c3, p1, p2;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -45,6 +45,9 @@ void init() {
     p1.setColor(0.329412,0.329412,0.329412);
     p1.setPoint(250, 1390);
 
+    p2.setRadius(150);
+    p2.setColor(0.9, 0.2, 0.2);
+    p2.setPoint(450, -100);
 
     //Initialize stars
     srand(time(NULL));
@@ -104,6 +107,7 @@ void displayGame(){
 //draw objects
     //myCircle.draw();
     p1.draw();
+    p2.draw();
 }
 void displayEnd(){}
 
@@ -240,7 +244,7 @@ void kbdS(int key, int x, int y) {
                 if (myRectangle.getCenter().y < height/2+40){
                     myRectangle.setPoint(myRectangle.getCenter().x, height/2+40);
                 }
-                p1.move(0,30);
+                p1.move(0,20);
                 for (int i = 0;i<stars2.size();i++){
                     stars2[i].move(0, stars2[i].getRadius()*2);
                     if (stars2[i].getCenter().y > height){
@@ -251,6 +255,7 @@ void kbdS(int key, int x, int y) {
                         //stars is moving off the bottom of the screen, which is bad
                         stars2[i].setPoint(0, stars2[i].getCenter().y);
                     }
+                p2.move(0,5);
                 }
                 break;
         }
