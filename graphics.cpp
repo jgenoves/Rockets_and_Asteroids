@@ -245,6 +245,7 @@ void kbdS(int key, int x, int y) {
                     myRectangle.setPoint(myRectangle.getCenter().x, height/2+40);
                 }
                 p1.move(0,20);
+                p2.move(0,5);
                 for (int i = 0;i<stars2.size();i++){
                     stars2[i].move(0, stars2[i].getRadius()*2);
                     if (stars2[i].getCenter().y > height){
@@ -255,7 +256,6 @@ void kbdS(int key, int x, int y) {
                         //stars is moving off the bottom of the screen, which is bad
                         stars2[i].setPoint(0, stars2[i].getCenter().y);
                     }
-                p2.move(0,5);
                 }
                 break;
         }
