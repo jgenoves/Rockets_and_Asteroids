@@ -13,6 +13,7 @@ enum mode{start, game, endgame};
 
 GLdouble width, height;
 int wd;
+int score = 0;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1;
@@ -101,7 +102,15 @@ void displayGame(){
     for (char c: message) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
-//draw objects
+    string message1 = "Score: ";
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(355,50);
+    for (char c: message1) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+
+
+    //draw objects
     //myCircle.draw();
     p1.draw();
 }
@@ -237,10 +246,14 @@ void kbdS(int key, int x, int y) {
                 break;
             case GLUT_KEY_UP:
                 myRectangle.move(0, -20);
+                score = score +f;
+                glColor3f(1.0, 1.0, 0.0);
+                glRasterPos2i(365,50);
+                    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, score);
                 if (myRectangle.getCenter().y < height/2+40){
                     myRectangle.setPoint(myRectangle.getCenter().x, height/2+40);
                 }
-                p1.move(0,30);
+                p1.move(0,20);
                 for (int i = 0;i<stars2.size();i++){
                     stars2[i].move(0, stars2[i].getRadius()*2);
                     if (stars2[i].getCenter().y > height){
@@ -255,9 +268,7 @@ void kbdS(int key, int x, int y) {
                 break;
         }
     }
-
     glutPostRedisplay();
-
     return;
 }
 
