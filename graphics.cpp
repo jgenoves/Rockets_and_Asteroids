@@ -8,6 +8,8 @@
 #include <math.h>
 #include <iostream>
 #include "shapes.h"
+#include <ctime>
+#include "fueltank.h"
 
 using namespace std;
 
@@ -21,10 +23,12 @@ int score = 0, money = 0;
 int rad = 15;
 mode screen;
 Rect myRectangle;
-Circle myCircle, c1, c2, c3, p1, p2;
-vector<Circle> stars;
-vector<Circle> stars2;
-vector<Circle> coins;
+Circle myCircle, c1, c2, c3, p1,p2;
+fueltank f1;
+vector <Circle> stars;
+vector <Circle> stars2;
+vector <Circle> coins;
+
 
 void init() {
     screen = start;
@@ -54,6 +58,8 @@ void init() {
     p2.setRadius(150);
     p2.setColor(0.9, 0.2, 0.2);
     p2.setPoint(450, -100);
+
+
 
     //Initialize stars
     srand(time(NULL));
@@ -286,7 +292,16 @@ void kbd(unsigned char key, int x, int y) {
         glutDestroyWindow(wd);
         exit(0);
     }
+
+    //Registers a space bar pressed
+    //used for boost, each press reduces remaining fuel (out of 5) by 1.
+  
+
+    if (screen ==game) {
     if (screen == game) {
+   if (key==32){
+        f1.useFuel();
+    }
         switch (key) {
             case 'r':
                 myRectangle.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
@@ -413,6 +428,7 @@ void kbdS(int key, int x, int y) {
 
                 }
                 break;
+
         }
     }
     glutPostRedisplay();
