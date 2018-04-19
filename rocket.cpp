@@ -5,7 +5,7 @@
 
 #include "rocket.h"
 
-Rocket::Rocket() : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+Rocket::Rocket() : hullStat(notDamaged), hullHealth(100), fuelAmount(100){
     Rect baseRect();
 }
 
@@ -22,14 +22,27 @@ int Rocket::getPosY() const {
     return p.y ;
 }
 
-fueltank Rocket::getFuelTank() const {
-    return tank;
+double Rocket::getFuelAmount() const {
+    return 0;
 }
 
-void Rocket::setFuelTank(fueltank t) {
-    tank = t;
+double Rocket::getHullHealth() const{
+    return hullHealth;
 }
 
+void Rocket::setFuelAmount(double fuel) {
+    if(fuelAmount + fuel > 100){
+        fuelAmount == 100;
+    }else if(fuelAmount + fuel < 0){
+        fuelAmount == 0;
+    }else{
+        fuelAmount += fuel;
+    }
+}
+
+void Rocket::setFuelTankToFull() {
+    fuelAmount == 100;
+}
 
 void Rocket::sethullStat(const hullStatus h) {
     hullStat = h;
@@ -37,6 +50,14 @@ void Rocket::sethullStat(const hullStatus h) {
 
 void Rocket::setRocketPos(int x, int y) {
     baseRect.setPoint(x, y);
+}
+
+void Rocket::setHullHealth(double h) {
+    hullHealth = h;
+}
+
+void Rocket::refuel(fueltank fuel) {
+    setFuelAmount(fuel.getFuel());
 }
 
 void Rocket::move(direction d) {

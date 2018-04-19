@@ -20,7 +20,7 @@ private:
 
     hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
     Rect baseRect;
-    fueltank tank;
+    double fuelAmount; // 100 is full fuel
     double hullHealth; //100 is full health
 
     //Center coordinates for the rocket
@@ -36,7 +36,8 @@ public:
 
     //getters
     hullStatus getHulLStat() const;
-    fueltank getFuelTank() const;
+    double getFuelAmount() const;
+    double getHullHealth() const;
     int getPosX() const;
     int getPosY() const;
 
@@ -47,14 +48,28 @@ public:
      *      the rocket collects a fuel supply in the level.
      *      Note: fuel supply cannot exceed 100 in valye
      */
-    void setFuelTank(fueltank tank);
+    void setFuelAmount(double fuel);
 
+    /*
+     * R: nothing
+     * M: FuelTank amount
+     * E: this will set the FuelTank value to 100.
+     */
+    void setFuelTankToFull();
 
 
     //setter for hullStat
     void sethullStat(const hullStatus h);
     void setRocketPos(int x, int y);
+    void setHullHealth(double h);
 
+    /*
+     * R: fueltank object
+     * M: fuelAmount
+     * E: adds fueltank object value to fuelAmount
+     *
+     */
+    void refuel(fueltank fuel);
 
     /*
      * R:
@@ -66,6 +81,7 @@ public:
      *      Moving the rocket also spends fuel.
      */
     void move(direction d);
+
 
     /*
      * R: nothing
