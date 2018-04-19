@@ -24,7 +24,7 @@ int rad = 15;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1,p2;
-fueltank f1;
+fuelTank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -297,9 +297,9 @@ void kbd(unsigned char key, int x, int y) {
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
 
-    if (screen ==game) {
+    if (screen == game) {
         if (screen == game) {
-            if (key==32){
+            if (key == 32) {
                 f1.useFuel();
             }
             switch (key) {
@@ -317,6 +317,7 @@ void kbd(unsigned char key, int x, int y) {
 
         return;
     }
+}
 
     void kbdS(int key, int x, int y) {
         if (screen == game) {
@@ -360,11 +361,11 @@ void kbd(unsigned char key, int x, int y) {
                     for (int i = 0; i < coins.size(); i++) {
                         coins[i].move(20, 0);
                         if (coins[i].getCenter().x > width) {
-                            coins[i].setColor(1.0,1.0,0.0);
+                            coins[i].setColor(1.0, 1.0, 0.0);
                             coins[i].setPoint(0, coins[i].getCenter().y);
                         }
                     }
-                    p2.move(10,0);
+                    p2.move(10, 0);
                     break;
                 case GLUT_KEY_RIGHT:
                     //myRectangle.move(30,0);
@@ -386,12 +387,12 @@ void kbd(unsigned char key, int x, int y) {
                     for (int i = 0; i < coins.size(); i++) {
                         coins[i].move(-20, 0);
                         if (coins[i].getCenter().x == 0) {
-                            coins[i].setColor(1.0,1.0,0.0);
+                            coins[i].setColor(1.0, 1.0, 0.0);
                             //stars is moving off the bottom of the screen, which is bad
                             coins[i].setPoint(width, coins[i].getCenter().y);
                         }
                     }
-                    p2.move(-10,0);
+                    p2.move(-10, 0);
                     break;
                 case GLUT_KEY_UP:
                     myRectangle.move(0, -20);
@@ -409,8 +410,8 @@ void kbd(unsigned char key, int x, int y) {
                         coins[i].move(0, 20);
                         if (coins[i].getCenter().y > height) {
                             //stars is moving off the bottom of the screen, which is bad
-                            coins[i].setColor(1.0,1.0,0.0);
-                            coins[i].setPoint(coins[i].getCenter().x, height *-2);
+                            coins[i].setColor(1.0, 1.0, 0.0);
+                            coins[i].setPoint(coins[i].getCenter().x, height * -2);
                         }
                     }
                     for (int i = 0; i < stars2.size(); i++) {
@@ -426,7 +427,6 @@ void kbd(unsigned char key, int x, int y) {
 
                     }
                     break;
-
             }
         }
         glutPostRedisplay();
@@ -447,8 +447,7 @@ void kbd(unsigned char key, int x, int y) {
     void mouse(int button, int state, int x, int y) {
         if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == start) {
             screen = info;
-        }
-        else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == info) {
+        } else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == info) {
             screen = game;
         }
         glutPostRedisplay();
@@ -468,7 +467,7 @@ void kbd(unsigned char key, int x, int y) {
         //glutTimerFunc waits for 40 milliseconds before it calls itself.
         glutTimerFunc(40, timer, 0);
     }
-    void timer1(int extra1){
+    void timer1(int extra1) {
         if (extra1 == 0) {
             rad--;
             for (int i = 0; i < coins.size(); i++) {
@@ -479,15 +478,13 @@ void kbd(unsigned char key, int x, int y) {
                     glutTimerFunc(40, timer1, 0);
                 }
             }
-        }
-        else if (extra1 == 1){
+        } else if (extra1 == 1) {
             rad++;
-            for(int i = 0; i < coins.size(); i++) {
+            for (int i = 0; i < coins.size(); i++) {
                 coins[i].setRadius(rad);
                 if (rad == 20) {
                     glutTimerFunc(40, timer1, 0);
-                }
-                else{
+                } else {
                     glutTimerFunc(40, timer1, 1);
                 }
             }
@@ -542,3 +539,4 @@ void kbd(unsigned char key, int x, int y) {
         return 0;
 
     }
+
