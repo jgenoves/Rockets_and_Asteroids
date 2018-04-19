@@ -7,22 +7,22 @@ using namespace std;
 #include <iostream>
 
 
-fueltank::fueltank(){
+fueltank::fuelTank(){
     fuel = 5;
 }
 
-int fueltank::getFuel() {
+int fuelTank::getFuel() {
     return fuel;
 }
 
-void fueltank::setFuel(int f) {
+void fuelTank::setFuel(int f) {
     fuel = f;
 }
 
-void fueltank::useFuel() {
+void fuelTank::useFuel() {
     if(fuel > 0){
         fuel--;
-        cout << "remaining fule: " << fuel << endl;
+        cout << "remaining file: " << fuel << endl;
     } else{
         cout << "out of fuel" << endl;
     }
