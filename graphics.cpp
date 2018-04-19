@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include "shapes.h"
+#include <ctime>
+#include "fueltank.h"
 
 using namespace std;
 
@@ -15,7 +17,12 @@ GLdouble width, height;
 int wd;
 mode screen;
 Rect myRectangle;
+<<<<<<< .merge_file_T3aXEq
 Circle myCircle, c1, c2, c3, p1, p2;
+=======
+Circle myCircle, c1, c2, c3, p1;
+fueltank f1;
+>>>>>>> .merge_file_eNxk19
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -48,6 +55,8 @@ void init() {
     p2.setRadius(150);
     p2.setColor(0.9, 0.2, 0.2);
     p2.setPoint(450, -100);
+
+
 
     //Initialize stars
     srand(time(NULL));
@@ -162,6 +171,13 @@ void kbd(unsigned char key, int x, int y) {
         glutDestroyWindow(wd);
         exit(0);
     }
+
+    //Registers a space bar pressed
+    //used for boost, each press reduces remaining fuel (out of 5) by 1.
+    if (key==32){
+        f1.useFuel();
+    }
+
     if (screen ==game) {
         switch (key) {
             case 'r':
@@ -258,6 +274,7 @@ void kbdS(int key, int x, int y) {
                     }
                 }
                 break;
+
         }
     }
 
