@@ -7,7 +7,7 @@ using namespace std;
 #include <iostream>
 
 
-fueltank::fuelTank(){
+fuelTank::fuelTank(){
     fuel = 5;
 }
 
