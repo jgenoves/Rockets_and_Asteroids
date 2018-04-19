@@ -147,6 +147,14 @@ public:
 
 };
 
+class Asteroid : public Circle{
+private:
+public:
+    Asteroid();
+
+};
+
+
 class Triangle : public Shape {
 private:
     int s1, s2, s3;

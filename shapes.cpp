@@ -144,6 +144,12 @@ Planet::Planet(): Circle() {
 
 }
 
+/******************** Asteroid class ********************/
+
+Asteroid::Asteroid() : Circle() {
+
+}
+
 /******************** Rect class ********************/
 
 void Rect::calculateArea() {
