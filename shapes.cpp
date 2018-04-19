@@ -130,7 +130,7 @@ void Circle::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    glColor3f(0.7,0.7,0.8);
+   // glColor3f(0.7,0.7,0.8);
     //TODO: Make this color inside out thing a member of the circle class
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
@@ -205,10 +205,10 @@ void Rect::draw() const {
     //top left
     glVertex2i(center.x-(length/2.0),center.y-(height/2.0));
     //top right
-    glVertex2i(center.x+(length/2.0),center.y-(height/2.0));
+    glVertex2i(center.x+(length/2), center.y-(height/2.0));
 
     //bottom right
-    glVertex2i(center.x+(length/2.0),center.y+(height/2.0));
+    glVertex2i(center.x+(length/2),center.y+(height/2.0));
 
     //bottom left
     glVertex2i(center.x-(length/2.0),center.y+(height/2.0));
