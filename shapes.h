@@ -18,6 +18,7 @@ struct color {
 };
 
 struct point {
+
     // these fields are public by default
     int x;
     int y;
@@ -46,6 +47,7 @@ public:
     void setPoint(point c);
     void setPoint(int xIn, int yIn);
     void move(int deltaX, int deltaY);
+
     void setColor(color f);
     void setColor(double r, double g, double b);
     // Note: no setters for area or perimeter
@@ -102,6 +104,11 @@ class Rect : public Shape {
 private:
     double length;
     double height;
+    point topRight;
+    point topLeft;
+    point bottomRight;
+    point bottomLeft;
+
 
     void calculateArea() override;
     void calculatePerimeter() override;
@@ -110,6 +117,7 @@ public:
     // Constructors
     Rect();
     Rect(double l, double h);
+    void rotate(int degrees);
     Rect(double l, double h, point c);
     Rect(double l, double h, int xIn, int yIn);
     explicit Rect(point c);
