@@ -78,9 +78,6 @@ public:
      */
     void drawRocket();
 
-
-
-
 };
 
 
