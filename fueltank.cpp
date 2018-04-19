@@ -20,8 +20,9 @@ void fueltank::setFuel(int f) {
 }
 
 void fueltank::useFuel() {
-    if(fuel < 0){
+    if(fuel > 0){
         fuel--;
+        cout << "remaining fule: " << fuel << endl;
     } else{
         cout << "out of fuel" << endl;
     }
