@@ -13,6 +13,6 @@ file(GLOB SOURCE_FILES
         *.h
         )
 
-add_executable(main.cpp ${SOURCE_FILES} shapes.cpp shapes.h shapes.cpp shapes.h graphics.cpp graphics.h rocket.cpp rocket.h)
+add_executable(main.cpp ${SOURCE_FILES} shapes.cpp shapes.h shapes.cpp shapes.h graphics.cpp graphics.h rocket.cpp rocket.h fueltank.cpp fueltank.h)
 
 target_link_libraries (main.cpp ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
