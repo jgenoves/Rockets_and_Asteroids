@@ -7,6 +7,7 @@
 
 #include "shapes.h"
 #include "graphics.h"
+#include "fueltank.h"
 
 //Possibility? Use this enum to determine how the rocket should look based on health.
 enum hullStatus {notDamaged, Damaged, veryDamaged };
@@ -19,7 +20,7 @@ private:
 
     hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
     Rect baseRect;
-    double FuelTank; // 100 is full fuel
+    fueltank tank;
     double hullHealth; //100 is full health
 
     //Center coordinates for the rocket
@@ -35,7 +36,7 @@ public:
 
     //getters
     hullStatus getHulLStat() const;
-    double getFuelTank() const;
+    fueltank getFuelTank() const;
     int getPosX() const;
     int getPosY() const;
 
@@ -46,14 +47,9 @@ public:
      *      the rocket collects a fuel supply in the level.
      *      Note: fuel supply cannot exceed 100 in valye
      */
-    void setFuelTank(double fuelAmount);
+    void setFuelTank(fueltank tank);
 
-    /*
-     * R: nothing
-     * M: FuelTank amount
-     * E: this will set the FuelTank value to 100.
-     */
-    void setFuelTankToFull();
+
 
     //setter for hullStat
     void sethullStat(const hullStatus h);

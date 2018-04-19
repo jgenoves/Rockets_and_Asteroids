@@ -22,23 +22,14 @@ int Rocket::getPosY() const {
     return p.y ;
 }
 
-double Rocket::getFuelTank() const {
-    return 0;
+fueltank Rocket::getFuelTank() const {
+    return tank;
 }
 
-void Rocket::setFuelTank(double fuelAmount) {
-    if(FuelTank + fuelAmount > 100){
-        FuelTank == 100;
-    }else if(FuelTank + fuelAmount < 0){
-        FuelTank == 0;
-    }else{
-        FuelTank += fuelAmount;
-    }
+void Rocket::setFuelTank(fueltank t) {
+    tank = t;
 }
 
-void Rocket::setFuelTankToFull() {
-    FuelTank == 100;
-}
 
 void Rocket::sethullStat(const hullStatus h) {
     hullStat = h;
