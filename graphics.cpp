@@ -67,7 +67,7 @@ void init() {
     srand(time(NULL));
     rad = 15;
     for (int i = 0; i < 5; i++) {
-        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
+        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 1.0, 0.0));
     }
 
 }
@@ -346,11 +346,12 @@ void kbdS(int key, int x, int y) {
                 }
                 for (int i = 0; i < coins.size(); i++) {
                     coins[i].move(20, 0);
-                    if (coins[i].getCenter().x < 0) {
-                        //stars is moving off the bottom of the screen, which is bad
-                        coins[i].setPoint(width, coins[i].getCenter().y);
+                    if (coins[i].getCenter().x > width) {
+                        coins[i].setColor(1.0,1.0,0.0);
+                        coins[i].setPoint(0, coins[i].getCenter().y);
                     }
                 }
+                p2.move(10,0);
                 break;
             case GLUT_KEY_RIGHT:
                 //myRectangle.move(30,0);
@@ -371,11 +372,13 @@ void kbdS(int key, int x, int y) {
                 }
                 for (int i = 0; i < coins.size(); i++) {
                     coins[i].move(-20, 0);
-                    if (coins[i].getCenter().x > width) {
+                    if (coins[i].getCenter().x == 0) {
+                        coins[i].setColor(1.0,1.0,0.0);
                         //stars is moving off the bottom of the screen, which is bad
-                        coins[i].setPoint(0, coins[i].getCenter().y);
+                        coins[i].setPoint(width, coins[i].getCenter().y);
                     }
                 }
+                p2.move(-10,0);
                 break;
             case GLUT_KEY_UP:
                 myRectangle.move(0, -20);
@@ -393,7 +396,8 @@ void kbdS(int key, int x, int y) {
                     coins[i].move(0, 20);
                     if (coins[i].getCenter().y > height) {
                         //stars is moving off the bottom of the screen, which is bad
-                        coins[i].setPoint(coins[i].getCenter().x, height * -4);
+                        coins[i].setColor(1.0,1.0,0.0);
+                        coins[i].setPoint(coins[i].getCenter().x, height *-2);
                     }
                 }
                 for (int i = 0; i < stars2.size(); i++) {
