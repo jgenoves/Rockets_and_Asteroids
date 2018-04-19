@@ -140,14 +140,153 @@ void Circle::draw() const {
 
 /******************** Planet class ********************/
 
-Planet::Planet(): Circle() {
-
+void Planet::calculateArea() {
+    // A = pi*r^2
+    area = PI * radius * radius;
 }
 
+void Planet::calculatePerimeter() {
+    // Circumference = 2*pi*r
+    perimeter = 2.0 * PI * radius;
+}
+
+Planet::Planet() : Shape(), radius(0){
+}
+
+Planet::Planet(double rad) : Shape() {
+    // radius not in initializer list because
+    // we want to check for value >= 0
+    setRadius(rad);
+}
+
+Planet::Planet(double rad, point c) : Shape(c, {0, 0, 0}) {
+    setRadius(0);
+}
+
+Planet::Planet(double rad, int xIn, int yIn) :
+        Shape(xIn, yIn, 0, 0, 0) {
+    setRadius(rad);
+}
+
+Planet::Planet(point c) : Shape(c, {0, 0, 0}), radius(0) { }
+
+Planet::Planet(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
+                                       radius(0) { }
+
+Planet::Planet(color f) : Shape({0, 0}, f), radius(0) { }
+
+Planet::Planet(double r, double g, double b) :
+        Shape({0, 0}, {r, g, b}), radius(0) { }
+
+Planet::Planet(double rad, point c, color f) : Shape(c, f) {
+    setRadius(rad);
+}
+
+Planet::Planet(double rad,
+                   int xIn, int yIn,
+                   double r, double g, double b) :
+        Shape(xIn, yIn, r, g, b) {
+    setRadius(rad);
+}
+
+double Planet::getRadius() const {
+    return radius;
+}
+
+void Planet::setRadius(double rad) {
+    // radius should not be negative
+    radius = (rad < 0) ? 0 : rad;
+    // now recalculate area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Planet::draw() const {
+    glColor3f(fill.red, fill.green, fill.blue);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2i(center.x, center.y);
+    // glColor3f(0.7,0.7,0.8);
+    //TODO: Make this color inside out thing a member of the circle class
+    for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
+        glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
+    }
+    glEnd();
+}
+
+
 /******************** Asteroid class ********************/
+void Asteroid::calculateArea() {
+    // A = pi*r^2
+    area = PI * radius * radius;
+}
 
-Asteroid::Asteroid() : Circle() {
+void Asteroid::calculatePerimeter() {
+    // Circumference = 2*pi*r
+    perimeter = 2.0 * PI * radius;
+}
 
+Asteroid::Asteroid() : Shape(), radius(0){
+}
+
+Asteroid::Asteroid(double rad) : Shape() {
+        // radius not in initializer list because
+        // we want to check for value >= 0
+        setRadius(rad);
+}
+
+Asteroid::Asteroid(double rad, point c) : Shape(c, {0, 0, 0}) {
+    setRadius(0);
+}
+
+Asteroid::Asteroid(double rad, int xIn, int yIn) :
+        Shape(xIn, yIn, 0, 0, 0) {
+    setRadius(rad);
+}
+
+Asteroid::Asteroid(point c) : Shape(c, {0, 0, 0}), radius(0) { }
+
+Asteroid::Asteroid(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
+                                   radius(0) { }
+
+Asteroid::Asteroid(color f) : Shape({0, 0}, f), radius(0) { }
+
+Asteroid::Asteroid(double r, double g, double b) :
+        Shape({0, 0}, {r, g, b}), radius(0) { }
+
+Asteroid::Asteroid(double rad, point c, color f) : Shape(c, f) {
+    setRadius(rad);
+}
+
+Asteroid::Asteroid(double rad,
+               int xIn, int yIn,
+               double r, double g, double b) :
+        Shape(xIn, yIn, r, g, b) {
+    setRadius(rad);
+}
+
+
+double Asteroid::getRadius() const {
+    return radius;
+}
+
+void Asteroid::setRadius(double rad) {
+    // radius should not be negative
+    radius = (rad < 0) ? 0 : rad;
+    // now recalculate area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Asteroid::draw() const {
+    glColor3f(fill.red, fill.green, fill.blue);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2i(center.x, center.y);
+    // glColor3f(0.7,0.7,0.8);
+    //TODO: Make this color inside out thing a member of the circle class
+    for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
+        glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
+    }
+    glEnd();
 }
 
 /******************** Rect class ********************/

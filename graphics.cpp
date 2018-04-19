@@ -9,7 +9,8 @@
 #include <iostream>
 #include "shapes.h"
 #include <ctime>
-#include "fueltank.h"
+#include "rocket.cpp"
+#include "rocket.h"
 
 using namespace std;
 
@@ -24,10 +25,11 @@ int rad = 15;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1,p2;
-fuelTank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
+vector <Asteroid> asteroids;
+vector <Planet> planets;
 
 
 void init() {
@@ -76,6 +78,18 @@ void init() {
         coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 1.0, 0.0));
     }
 
+    // Initialize asteroids
+    srand(time(NULL));
+    rad = 30;
+    for (int i=0; i < 3; i++) {
+        asteroids.push_back(Asteroid(rad, rand() % (int) width, rand() % int(height) * -6, 0.9, 0.9, 0.9));
+    }
+    // Initialize Planets
+    srand(time(NULL));
+    rad = 50;
+    for (int i=0; i < 2; i++) {
+        planets.push_back(Planet(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 0.0, 0.1));
+    }
 }
 
 /* Initialize OpenGL Graphics */
@@ -153,16 +167,30 @@ void displayGame() {
             money +=10;
         }
     }
-
+    //TODO: Make the overlapping planets and rectangles set fuel to full
+    // function to set fuel tank to full
+    /*
+    for (int i = 0; i < planets.size(); i++) {
+        if (isOverlappingPlanRect(planets[i], myRectangle)) {
+            planets[i].setColor(1.0, 0.02, 0.5);
+            //setFuelTankToFull();
+        }
+    }*/
+    for (int i = 0; i < planets.size(); i++) {
+        planets[i].draw();
+    }
     for (int i = 0; i < stars2.size(); i++) {
         stars2[i].draw();
     }
     for (int i = 0; i < coins.size(); i++) {
         coins[i].draw();
     }
+    for (int i = 0; i < asteroids.size(); i++) {
+        asteroids[i].draw();
+    }
+
     myRectangle.draw();
-    p2.draw();
-    p1.draw();
+
 
     // Draw words
     string message = "$: ";
@@ -282,6 +310,11 @@ bool isOverlappingCirRect(const Circle &c, const Rect &r) {
             (c.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, c.getCenter().y}, c.getCenter()));
 }
 
+bool isOverlappingPlanRect(const Planet &p, const Rect &r) {
+    return ((p.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, p.getCenter().y}, r.getCenter()) &&
+            (p.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, p.getCenter().y}, p.getCenter()));
+}
+
 /************** KEY ASSIGNMENTS ************/
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
@@ -365,6 +398,20 @@ void kbd(unsigned char key, int x, int y) {
                             coins[i].setPoint(0, coins[i].getCenter().y);
                         }
                     }
+                    for (int i = 0; i < asteroids.size(); i++) {
+                        asteroids[i].move(20, 0);
+                        if (asteroids[i].getCenter().x > width) {
+                            asteroids[i].setColor(.9, .9, .9);
+                            asteroids[i].setPoint(0, asteroids[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < planets.size(); i++) {
+                        planets[i].move(10, 0);
+                        if (planets[i].getCenter().x > width) {
+                            planets[i].setColor(1.0, 0.0, 0.1);
+                            planets[i].setPoint(0, planets[i].getCenter().y);
+                        }
+                    }
                     p2.move(10, 0);
                     break;
                 case GLUT_KEY_RIGHT:
@@ -390,6 +437,20 @@ void kbd(unsigned char key, int x, int y) {
                             coins[i].setColor(1.0, 1.0, 0.0);
                             //stars is moving off the bottom of the screen, which is bad
                             coins[i].setPoint(width, coins[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < asteroids.size(); i++) {
+                        asteroids[i].move(-20, 0);
+                        if (asteroids[i].getCenter().x == 0) {
+                            asteroids[i].setColor(.9, .9, .9);
+                            asteroids[i].setPoint(width, asteroids[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < planets.size(); i++) {
+                        planets[i].move(-10, 0);
+                        if (planets[i].getCenter().x == 0) {
+                            planets[i].setColor(.9, .9, .9);
+                            planets[i].setPoint(width, planets[i].getCenter().y);
                         }
                     }
                     p2.move(-10, 0);
@@ -424,7 +485,20 @@ void kbd(unsigned char key, int x, int y) {
                             //stars is moving off the bottom of the screen, which is bad
                             stars2[i].setPoint(0, stars2[i].getCenter().y);
                         }
-
+                    }
+                    for (int i = 0; i < asteroids.size(); i++) {
+                        asteroids[i].move(0, 40);
+                        if (asteroids[i].getCenter().y > height) {
+                            asteroids[i].setColor(.9, .9, .9);
+                            asteroids[i].setPoint(asteroids[i].getCenter().x, height * -2);
+                        }
+                    }
+                    for (int i = 0; i < planets.size(); i++) {
+                        planets[i].move(0, 10);
+                        if (planets[i].getCenter().y > height) {
+                            planets[i].setColor(.9, .9, .9);
+                            planets[i].setPoint(planets[i].getCenter().x, height * -2);
+                        }
                     }
                     break;
             }

@@ -100,6 +100,60 @@ public:
     void draw() const override;
 };
 
+class Asteroid : public Shape {
+protected:
+    double radius;
+
+    void calculateArea() override;
+    void calculatePerimeter() override;
+public:
+    Asteroid();
+    explicit Asteroid(double rad);
+    Asteroid(double rad, point c);
+    Asteroid(double rad, int xIn, int yIn);
+    explicit Asteroid(point c);
+    Asteroid(int xIn, int yIn);
+    explicit Asteroid(color f);
+    Asteroid(double r, double g, double b);
+    Asteroid(double rad, point c, color f);
+    Asteroid(double rad, int xIn, int yIn, double r, double g, double b);
+
+    // Getter
+    double getRadius() const;
+
+    // Setter
+    void setRadius(double rad);
+
+    void draw() const override;
+};
+
+class Planet : public Shape {
+protected:
+    double radius;
+
+    void calculateArea() override;
+    void calculatePerimeter() override;
+public:
+    Planet();
+    explicit Planet(double rad);
+    Planet(double rad, point c);
+    Planet(double rad, int xIn, int yIn);
+    explicit Planet(point c);
+    Planet(int xIn, int yIn);
+    explicit Planet(color f);
+    Planet(double r, double g, double b);
+    Planet(double rad, point c, color f);
+    Planet(double rad, int xIn, int yIn, double r, double g, double b);
+
+    // Getter
+    double getRadius() const;
+
+    // Setter
+    void setRadius(double rad);
+
+    void draw() const override;
+};
+
 class Rect : public Shape {
 private:
     double length;
@@ -138,20 +192,6 @@ public:
     void setDimensions(double l, double h);
 
     void draw() const override;
-};
-
-class Planet : public Circle{
-private:
-public:
-    Planet();
-
-};
-
-class Asteroid : public Circle{
-private:
-public:
-    Asteroid();
-
 };
 
 
