@@ -138,6 +138,12 @@ void Circle::draw() const {
     glEnd();
 }
 
+/******************** Planet class ********************/
+
+Planet::Planet(): Circle() {
+
+}
+
 /******************** Rect class ********************/
 
 void Rect::calculateArea() {
@@ -161,20 +167,20 @@ double Rect::getWidth() const {
 double Rect::getHeight() const {
     return height;
 }
-void Rect::rotate(int degrees){
-    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y-height/2);
-    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y-height/2);
-    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y+height/2);
-    bottomLeft = point(Rect().getCenter().x-length/2, Rect().getCenter().y+height/2);
+void Rect::rotate(double degrees){
+    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y - height/2);
+    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y - height/2);
+    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y + height/2);
+    bottomLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y + height/2);
 
-    topRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    topLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topLeft.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomLeft.y -= (int)sin(degrees*PI/180)+cos(degrees*PI/180);
+    topRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    topLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
 }
 
 void Rect::setDimensions(double l, double h) {
