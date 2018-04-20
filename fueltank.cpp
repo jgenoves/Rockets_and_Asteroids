@@ -3,7 +3,6 @@
 //
 
 #include "fueltank.h"
-using namespace std;
 #include <iostream>
 
 

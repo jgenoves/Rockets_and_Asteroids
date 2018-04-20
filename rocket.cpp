@@ -4,6 +4,7 @@
 //
 
 #include "rocket.h"
+#include "shapes.h"
 
 Rocket::Rocket() : hullStat(notDamaged), hullHealth(100), FuelTank(100){
     Rect baseRect();
