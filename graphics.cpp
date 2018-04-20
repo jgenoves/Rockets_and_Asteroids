@@ -7,7 +7,6 @@
 #include <vector>
 #include "shapes.h"
 #include <ctime>
-#include "fueltank.h"
 
 using namespace std;
 
@@ -18,7 +17,6 @@ int wd;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1;
-fueltank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -47,8 +45,6 @@ void init() {
     p1.setRadius(700);
     p1.setColor(0.329412,0.329412,0.329412);
     p1.setPoint(250, 1390);
-
-
 
 
     //Initialize stars
@@ -164,11 +160,6 @@ void kbd(unsigned char key, int x, int y) {
         exit(0);
     }
 
-    //Registers a space bar pressed
-    //used for boost, each press reduces remaining fuel (out of 5) by 1.
-    if (key==32){
-        f1.useFuel();
-    }
 
     if (screen ==game) {
         switch (key) {
@@ -265,7 +256,6 @@ void kbdS(int key, int x, int y) {
                     }
                 }
                 break;
-
         }
     }
 
