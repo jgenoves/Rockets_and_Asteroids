@@ -24,7 +24,7 @@ int rad = 15;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1,p2;
-fuelTank f1;
+fueltank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -73,7 +73,7 @@ void init() {
     srand(time(NULL));
     rad = 15;
     for (int i = 0; i < 5; i++) {
-        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 1.0, 0.0));
+        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
     }
 
 }
@@ -147,7 +147,7 @@ void displayGame() {
     for (int i = 0; i < coins.size(); i++) {
         if (isOverlappingCirRect(coins[i], myRectangle)) {
             //if (coins[i].getFill() == c1){
-            //  money +=10;
+              //  money +=10;
             //}
             coins[i].setColor(0.02, 0.02, 0.17);
             money +=10;
@@ -295,163 +295,162 @@ void kbd(unsigned char key, int x, int y) {
 
     //Registers a space bar pressed
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
+  
 
-
+    if (screen ==game) {
     if (screen == game) {
-        if (screen == game) {
-            if (key == 32) {
-                f1.useFuel();
-            }
-            switch (key) {
-                case 'r':
-                    myRectangle.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
-                    break;
-                case 'p':
-                    myRectangle.setColor(0.4, 0.0, 0.8);
-                    break;
-                case 'w':
-                    myRectangle.setColor(1.0, 1.0, 1.0);
-            }
-        }
-        glutPostRedisplay();
-
-        return;
+   if (key==32){
+        f1.useFuel();
     }
+        switch (key) {
+            case 'r':
+                myRectangle.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
+                break;
+            case 'p':
+                myRectangle.setColor(0.4, 0.0, 0.8);
+                break;
+            case 'w':
+                myRectangle.setColor(1.0, 1.0, 1.0);
+        }
+    }
+    glutPostRedisplay();
+
+    return;
 }
 
-    void kbdS(int key, int x, int y) {
-        if (screen == game) {
-            switch (key) {
-                /* case GLUT_KEY_DOWN:
-                     myRectangle.move(0, 30);
-                     if (myRectangle.getCenter().y > height-20){
-                         myRectangle.setPoint(myRectangle.getCenter().x, height-20);
+void kbdS(int key, int x, int y) {
+    if (screen == game) {
+        switch (key) {
+            /* case GLUT_KEY_DOWN:
+                 myRectangle.move(0, 30);
+                 if (myRectangle.getCenter().y > height-20){
+                     myRectangle.setPoint(myRectangle.getCenter().x, height-20);
+                 }
+
+                 for (int i = 0;i<stars2.size();i++){
+                     stars2[i].move(0, stars2[i].getRadius());
+                     if (stars2[i].getCenter().y > height){
+                         //stars is moving off the bottom of the screen, which is bad
+                         stars2[i].setPoint(stars2[i].getCenter().x, 0);
                      }
-                     for (int i = 0;i<stars2.size();i++){
-                         stars2[i].move(0, stars2[i].getRadius());
-                         if (stars2[i].getCenter().y > height){
-                             //stars is moving off the bottom of the screen, which is bad
-                             stars2[i].setPoint(stars2[i].getCenter().x, 0);
-                         }
-                         if (stars2[i].getCenter().x > width){
-                             //stars is moving off the bottom of the screen, which is bad
-                             stars2[i].setPoint(0, stars2[i].getCenter().y);
-                         }
+                     if (stars2[i].getCenter().x > width){
+                         //stars is moving off the bottom of the screen, which is bad
+                         stars2[i].setPoint(0, stars2[i].getCenter().y);
                      }
-                     break;
-                     */
-                case GLUT_KEY_LEFT:
+                 }
 
-                    myRectangle.rotate(15);
-                    //myRectangle.move(-20, 0);
-                    if (myRectangle.getCenter().x < 0) {
-                        myRectangle.setPoint(width, myRectangle.getCenter().y);
-                    }
-                    for (int i = 0; i < stars2.size(); i++) {
-                        stars2[i].move(stars2[i].getRadius() * 2, 0);
-                        if (stars2[i].getCenter().y > height) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(stars2[i].getCenter().x, 0);
-                        }
-                        if (stars2[i].getCenter().x > width) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(0, stars2[i].getCenter().y);
-                        }
-                    }
-                    for (int i = 0; i < coins.size(); i++) {
-                        coins[i].move(20, 0);
-                        if (coins[i].getCenter().x > width) {
-                            coins[i].setColor(1.0, 1.0, 0.0);
-                            coins[i].setPoint(0, coins[i].getCenter().y);
-                        }
-                    }
-                    p2.move(10, 0);
-                    break;
-                case GLUT_KEY_RIGHT:
-                    //myRectangle.move(30,0);
-                    myRectangle.rotate(15);
-                    if (myRectangle.getCenter().x > width) {
-                        myRectangle.setPoint(0, myRectangle.getCenter().y);
-                    }
-                    for (int i = 0; i < stars2.size(); i++) {
-                        stars2[i].move(-(stars2[i].getRadius()) * 2, 0);
-                        if (stars2[i].getCenter().y > height) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(stars2[i].getCenter().x, 0);
-                        }
-                        if (stars2[i].getCenter().x < 0) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(width, stars2[i].getCenter().y);
-                        }
-                    }
-                    for (int i = 0; i < coins.size(); i++) {
-                        coins[i].move(-20, 0);
-                        if (coins[i].getCenter().x == 0) {
-                            coins[i].setColor(1.0, 1.0, 0.0);
-                            //stars is moving off the bottom of the screen, which is bad
-                            coins[i].setPoint(width, coins[i].getCenter().y);
-                        }
-                    }
-                    p2.move(-10, 0);
-                    break;
-                case GLUT_KEY_UP:
-                    myRectangle.move(0, -20);
+                 break;
+                 */
+            case GLUT_KEY_LEFT:
 
-                    p2.move(0, 10);
-                    score++;
-                    glColor3f(1.0, 1.0, 0.0);
-                    glRasterPos2i(365, 50);
-                    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, score);
-                    if (myRectangle.getCenter().y < height / 2 + 40) {
-                        myRectangle.setPoint(myRectangle.getCenter().x, height / 2 + 40);
+                myRectangle.rotate(15);
+                //myRectangle.move(-20, 0);
+                if (myRectangle.getCenter().x < 0) {
+                    myRectangle.setPoint(width, myRectangle.getCenter().y);
+                }
+                for (int i = 0; i < stars2.size(); i++) {
+                    stars2[i].move(stars2[i].getRadius() * 2, 0);
+                    if (stars2[i].getCenter().y > height) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
                     }
-                    p1.move(0, 20);
-                    for (int i = 0; i < coins.size(); i++) {
-                        coins[i].move(0, 20);
-                        if (coins[i].getCenter().y > height) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            coins[i].setColor(1.0, 1.0, 0.0);
-                            coins[i].setPoint(coins[i].getCenter().x, height * -2);
-                        }
+                    if (stars2[i].getCenter().x > width) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(0, stars2[i].getCenter().y);
                     }
-                    for (int i = 0; i < stars2.size(); i++) {
-                        stars2[i].move(0, stars2[i].getRadius() * 2);
-                        if (stars2[i].getCenter().y > height) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(stars2[i].getCenter().x, 0);
-                        }
-                        if (stars2[i].getCenter().x > width) {
-                            //stars is moving off the bottom of the screen, which is bad
-                            stars2[i].setPoint(0, stars2[i].getCenter().y);
-                        }
+                }
+                for (int i = 0; i < coins.size(); i++) {
+                    coins[i].move(20, 0);
+                    if (coins[i].getCenter().x < 0) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        coins[i].setPoint(width, coins[i].getCenter().y);
+                    }
+                }
+                break;
+            case GLUT_KEY_RIGHT:
+                //myRectangle.move(30,0);
+                myRectangle.rotate(15);
+                if (myRectangle.getCenter().x > width) {
+                    myRectangle.setPoint(0, myRectangle.getCenter().y);
+                }
+                for (int i = 0; i < stars2.size(); i++) {
+                    stars2[i].move(-(stars2[i].getRadius()) * 2, 0);
+                    if (stars2[i].getCenter().y > height) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x < 0) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(width, stars2[i].getCenter().y);
+                    }
+                }
+                for (int i = 0; i < coins.size(); i++) {
+                    coins[i].move(-20, 0);
+                    if (coins[i].getCenter().x > width) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        coins[i].setPoint(0, coins[i].getCenter().y);
+                    }
+                }
+                break;
+            case GLUT_KEY_UP:
+                myRectangle.move(0, -20);
 
+                p2.move(0, 10);
+                score++;
+                glColor3f(1.0, 1.0, 0.0);
+                glRasterPos2i(365, 50);
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, score);
+                if (myRectangle.getCenter().y < height / 2 + 40) {
+                    myRectangle.setPoint(myRectangle.getCenter().x, height / 2 + 40);
+                }
+                p1.move(0, 20);
+                for (int i = 0; i < coins.size(); i++) {
+                    coins[i].move(0, 20);
+                    if (coins[i].getCenter().y > height) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        coins[i].setPoint(coins[i].getCenter().x, height * -4);
                     }
-                    break;
-            }
+                }
+                for (int i = 0; i < stars2.size(); i++) {
+                    stars2[i].move(0, stars2[i].getRadius() * 2);
+                    if (stars2[i].getCenter().y > height) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                    }
+                    if (stars2[i].getCenter().x > width) {
+                        //stars is moving off the bottom of the screen, which is bad
+                        stars2[i].setPoint(0, stars2[i].getCenter().y);
+                    }
+
+                }
+                break;
+
         }
-        glutPostRedisplay();
-        return;
     }
+    glutPostRedisplay();
+    return;
+}
 
-    void cursor(int x, int y) {
-        //move circle with mouse
-        /* if (screen == game) {
-             myCircle.setPoint(x, y);
-         }
-         */
-        glutPostRedisplay();
-    }
+void cursor(int x, int y) {
+    //move circle with mouse
+    /* if (screen == game) {
+         myCircle.setPoint(x, y);
+     }
+     */
+    glutPostRedisplay();
+}
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
-    void mouse(int button, int state, int x, int y) {
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == start) {
-            screen = info;
-        } else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == info) {
-            screen = game;
-        }
-        glutPostRedisplay();
+void mouse(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == start) {
+        screen = info;
     }
+    else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == info) {
+        screen = game;
+    }
+    glutPostRedisplay();
+}
 
 
     void timer(int extra) {
@@ -467,76 +466,77 @@ void kbd(unsigned char key, int x, int y) {
         //glutTimerFunc waits for 40 milliseconds before it calls itself.
         glutTimerFunc(40, timer, 0);
     }
-    void timer1(int extra1) {
-        if (extra1 == 0) {
-            rad--;
-            for (int i = 0; i < coins.size(); i++) {
-                coins[i].setRadius(rad);
-                if (rad == 1) {
-                    glutTimerFunc(40, timer1, 1);
-                } else {
-                    glutTimerFunc(40, timer1, 0);
-                }
-            }
-        } else if (extra1 == 1) {
-            rad++;
-            for (int i = 0; i < coins.size(); i++) {
-                coins[i].setRadius(rad);
-                if (rad == 20) {
-                    glutTimerFunc(40, timer1, 0);
-                } else {
-                    glutTimerFunc(40, timer1, 1);
-                }
+void timer1(int extra1){
+    if (extra1 == 0) {
+        rad--;
+        for (int i = 0; i < coins.size(); i++) {
+            coins[i].setRadius(rad);
+            if (rad == 1) {
+                glutTimerFunc(40, timer1, 1);
+            } else {
+                glutTimerFunc(40, timer1, 0);
             }
         }
-
-        glutPostRedisplay();
-        //glutTimerFunc waits for 40 milliseconds before it calls itself.
-        glutTimerFunc(40, timer1, 0);
     }
+    else if (extra1 == 1){
+        rad++;
+        for(int i = 0; i < coins.size(); i++) {
+            coins[i].setRadius(rad);
+            if (rad == 20) {
+                glutTimerFunc(40, timer1, 0);
+            }
+            else{
+                glutTimerFunc(40, timer1, 1);
+            }
+        }
+    }
+
+    glutPostRedisplay();
+    //glutTimerFunc waits for 40 milliseconds before it calls itself.
+    glutTimerFunc(40, timer1, 0);
+}
 
 /* Main function: GLUT runs as a console application starting at main()  */
-    int main(int argc, char **argv) {
+int main(int argc, char **argv) {
 
-        init();
+    init();
 
-        glutInit(&argc, argv);          // Initialize GLUT
+    glutInit(&argc, argv);          // Initialize GLUT
 
-        glutInitDisplayMode(GLUT_RGBA);
+    glutInitDisplayMode(GLUT_RGBA);
 
-        glutInitWindowSize((int) width, (int) height);
-        glutInitWindowPosition(200, 200); // Position the window's initial top-left corner
-        /* create the window and store the handle to it */
-        wd = glutCreateWindow("Fun with Drawing!" /* title */ );
+    glutInitWindowSize((int) width, (int) height);
+    glutInitWindowPosition(200, 200); // Position the window's initial top-left corner
+    /* create the window and store the handle to it */
+    wd = glutCreateWindow("Fun with Drawing!" /* title */ );
 
-        // Register callback handler for window re-paint event
-        glutDisplayFunc(display);
+    // Register callback handler for window re-paint event
+    glutDisplayFunc(display);
 
-        // Our own OpenGL initialization
-        initGL();
+    // Our own OpenGL initialization
+    initGL();
 
-        // register keyboard press event processing function
-        // works for numbers, letters, spacebar, etc.
-        glutKeyboardFunc(kbd);
+    // register keyboard press event processing function
+    // works for numbers, letters, spacebar, etc.
+    glutKeyboardFunc(kbd);
 
-        // register special event: function keys, arrows, etc.
-        glutSpecialFunc(kbdS);
+    // register special event: function keys, arrows, etc.
+    glutSpecialFunc(kbdS);
 
-        // handles mouse movement
-        glutPassiveMotionFunc(cursor);
+    // handles mouse movement
+    glutPassiveMotionFunc(cursor);
 
-        // handles mouse click
-        glutMouseFunc(mouse);
+    // handles mouse click
+    glutMouseFunc(mouse);
 
-        // handles timer
+    // handles timer
 
-        glutTimerFunc(0, timer, 0);
-        //  glutTimerFunc(0, timer1, 0);
+    glutTimerFunc(0, timer, 0);
+    //  glutTimerFunc(0, timer1, 0);
 
 
-        // Enter the event-processing loop
-        glutMainLoop();
-        return 0;
+    // Enter the event-processing loop
+    glutMainLoop();
+    return 0;
 
-    }
-
+}
