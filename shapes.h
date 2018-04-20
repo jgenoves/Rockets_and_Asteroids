@@ -104,6 +104,7 @@ class Asteroid : public Shape {
 protected:
     double radius;
 
+    void damageHull();
     void calculateArea() override;
     void calculatePerimeter() override;
 public:
@@ -131,6 +132,7 @@ class Planet : public Shape {
 protected:
     double radius;
 
+    void refuel();
     void calculateArea() override;
     void calculatePerimeter() override;
 public:

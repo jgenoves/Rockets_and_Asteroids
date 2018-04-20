@@ -139,6 +139,9 @@ void Circle::draw() const {
 }
 
 /******************** Planet class ********************/
+void Planet::refuel(){
+
+}
 
 void Planet::calculateArea() {
     // A = pi*r^2
@@ -215,6 +218,10 @@ void Planet::draw() const {
 
 
 /******************** Asteroid class ********************/
+void Asteroid::damageHull() {
+    
+}
+
 void Asteroid::calculateArea() {
     // A = pi*r^2
     area = PI * radius * radius;
