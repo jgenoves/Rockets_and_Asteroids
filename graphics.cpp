@@ -24,7 +24,7 @@ int rad = 15;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1,p2;
-fueltank f1;
+fuelTank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -298,23 +298,23 @@ void kbd(unsigned char key, int x, int y) {
   
 
     if (screen ==game) {
-    if (screen == game) {
-   if (key==32){
-        f1.useFuel();
-    }
-        switch (key) {
-            case 'r':
-                myRectangle.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
-                break;
-            case 'p':
-                myRectangle.setColor(0.4, 0.0, 0.8);
-                break;
-            case 'w':
-                myRectangle.setColor(1.0, 1.0, 1.0);
+        if (screen == game) {
+            if (key == 32) {
+                f1.useFuel();
+            }
+            switch (key) {
+                case 'r':
+                    myRectangle.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
+                    break;
+                case 'p':
+                    myRectangle.setColor(0.4, 0.0, 0.8);
+                    break;
+                case 'w':
+                    myRectangle.setColor(1.0, 1.0, 1.0);
+            }
         }
+        glutPostRedisplay();
     }
-    glutPostRedisplay();
-
     return;
 }
 
