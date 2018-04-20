@@ -313,7 +313,6 @@ void kbd(unsigned char key, int x, int y) {
             }
         }
         glutPostRedisplay();
-    }
     return;
 }
 
@@ -535,8 +534,6 @@ int main(int argc, char **argv) {
     // handles timer
 
     glutTimerFunc(0, timer, 0);
-    //  glutTimerFunc(0, timer1, 0);
-
 
     // Enter the event-processing loop
     glutMainLoop();
