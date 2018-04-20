@@ -11,6 +11,7 @@
 #include <ctime>
 #include "rocket.cpp"
 #include "rocket.h"
+#include "fueltank.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ int rad = 15;
 mode screen;
 Rect myRectangle;
 Circle myCircle, c1, c2, c3, p1,p2;
+fuelTank f1;
 vector <Circle> stars;
 vector <Circle> stars2;
 vector <Circle> coins;
@@ -167,15 +169,31 @@ void displayGame() {
             money +=10;
         }
     }
-    //TODO: Make the overlapping planets and rectangles set fuel to full
+
+    //TODO: Make the overlapping planets and rectangles set fuel to full, why is set fuel tank to full not working?
     // function to set fuel tank to full
-    /*
+
     for (int i = 0; i < planets.size(); i++) {
         if (isOverlappingPlanRect(planets[i], myRectangle)) {
             planets[i].setColor(1.0, 0.02, 0.5);
             //setFuelTankToFull();
         }
-    }*/
+    }
+
+    //TODO: Make asteroids affect hull status and go to endgame, why is hullstat not working?
+    for (int i = 0; i < asteroids.size(); i++) {
+        if (isOverlappingAstRect(asteroids[i], myRectangle)) {
+            if (hullStatus == notDamaged) {
+                //sethullStat(damaged);
+            } else if (hullStatus == Damaged) {
+                //sethullStat(veryDamaged);
+            } else {
+                screen == endgame;
+            }
+        }
+    }
+
+
     for (int i = 0; i < planets.size(); i++) {
         planets[i].draw();
     }
@@ -314,6 +332,12 @@ bool isOverlappingPlanRect(const Planet &p, const Rect &r) {
     return ((p.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, p.getCenter().y}, r.getCenter()) &&
             (p.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, p.getCenter().y}, p.getCenter()));
 }
+
+bool isOverlappingAstRect(const Asteroid &a, const Rect &r) {
+    return ((a.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, a.getCenter().y}, r.getCenter()) &&
+            (a.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, a.getCenter().y}, a.getCenter()));
+}
+
 
 /************** KEY ASSIGNMENTS ************/
 
