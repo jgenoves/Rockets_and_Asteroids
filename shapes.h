@@ -140,11 +140,6 @@ public:
     void draw() const override;
 };
 
-class Triangle : public Shape {
-private:
-    int s1, s2, s3;
-
-};
 
 
 
