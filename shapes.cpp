@@ -130,12 +130,24 @@ void Circle::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    glColor3f(0.7,0.7,0.8);
+   // glColor3f(0.7,0.7,0.8);
     //TODO: Make this color inside out thing a member of the circle class
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
     glEnd();
+}
+
+/******************** Planet class ********************/
+
+Planet::Planet(): Circle() {
+
+}
+
+/******************** Asteroid class ********************/
+
+Asteroid::Asteroid() : Circle() {
+
 }
 
 /******************** Rect class ********************/
@@ -161,20 +173,20 @@ double Rect::getWidth() const {
 double Rect::getHeight() const {
     return height;
 }
-void Rect::rotate(int degrees){
-    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y-height/2);
-    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y-height/2);
-    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y+height/2);
-    bottomLeft = point(Rect().getCenter().x-length/2, Rect().getCenter().y+height/2);
+void Rect::rotate(double degrees){
+    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y - height/2);
+    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y - height/2);
+    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y + height/2);
+    bottomLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y + height/2);
 
-    topRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    topLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topLeft.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomLeft.y -= (int)sin(degrees*PI/180)+cos(degrees*PI/180);
+    topRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    topLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
 }
 
 void Rect::setDimensions(double l, double h) {
@@ -193,10 +205,10 @@ void Rect::draw() const {
     //top left
     glVertex2i(center.x-(length/2.0),center.y-(height/2.0));
     //top right
-    glVertex2i(center.x+(length/2.0),center.y-(height/2.0));
+    glVertex2i(center.x+(length/2), center.y-(height/2.0));
 
     //bottom right
-    glVertex2i(center.x+(length/2.0),center.y+(height/2.0));
+    glVertex2i(center.x+(length/2),center.y+(height/2.0));
 
     //bottom left
     glVertex2i(center.x-(length/2.0),center.y+(height/2.0));

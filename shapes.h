@@ -70,7 +70,7 @@ protected:
 };
 
 class Circle : public Shape {
-private:
+protected:
     double radius;
 
     void calculateArea() override;
@@ -117,7 +117,7 @@ public:
     // Constructors
     Rect();
     Rect(double l, double h);
-    void rotate(int degrees);
+    void rotate(double degrees);
     Rect(double l, double h, point c);
     Rect(double l, double h, int xIn, int yIn);
     explicit Rect(point c);
@@ -139,6 +139,21 @@ public:
 
     void draw() const override;
 };
+
+class Planet : public Circle{
+private:
+public:
+    Planet();
+
+};
+
+class Asteroid : public Circle{
+private:
+public:
+    Asteroid();
+
+};
+
 
 class Triangle : public Shape {
 private:

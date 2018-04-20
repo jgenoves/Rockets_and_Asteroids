@@ -6,12 +6,12 @@
 #define GRAPHICS_FUELTANK_H
 
 
-class fueltank {
+class fuelTank {
 private:
     int fuel;
 public:
 
-    fueltank();
+    fuelTank();
 
 
     int getFuel();
