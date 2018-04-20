@@ -297,7 +297,6 @@ void kbd(unsigned char key, int x, int y) {
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
 
-    if (screen == game) {
         if (screen == game) {
             if (key == 32) {
                 f1.useFuel();
@@ -315,7 +314,7 @@ void kbd(unsigned char key, int x, int y) {
         }
         glutPostRedisplay();
     }
-        return;
+    return;
 }
 
 void kbdS(int key, int x, int y) {
