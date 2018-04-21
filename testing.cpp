@@ -121,11 +121,65 @@
 //    if (rock.getHullStat() != Damaged) {
 //        cout << "FAILED rocket default constructor getter/setter HullStat" << endl;
 //    }
-//    rock.setRocketPos(0,0);
-//    if (rock.getPosX() != 0 && rock.getPosX()!= 0){
+//    rock.move(0,0);
+//    if (rock.getCenter().x != 0 && rock.getCenter().y!= 0){
 //        cout << "FAILED rocket default constructor getter/setter point test" << endl;
 //    }
+//    /********** ASTEROID TESTING *************/
 //
+//    Asteroid a1(10);
+//    if (a1.getCenter().x != 0 && a1.getCenter().y != 0) {
+//        cout << "FAILED asteroid non-default constructor point test" << endl;
+//    }
+//    if (a1.getArea() != PI * 10 * 10) {
+//        cout << "FAILED asteroid non-default constructor area test" << endl;
+//    }
+//    if (a1.getFill().red != 0 && a1.getFill().blue != 0 && a1.getFill().green != 0) {
+//        cout << "FAILED asteroid non-default constructor fill test" << endl;
+//    }
+//    if (a1.getPerimeter() != 2 * PI * 10) {
+//        cout << "FAILED asteroid non-default constructor perimeter test" << endl;
+//    }
+//
+//    Asteroid a2(10, {1, 1});
+//    if (a2.getCenter().x != 1 && a2.getCenter().y != 1) {
+//        cout << "FAILED asteroid non-default constructor point test" << endl;
+//    }
+//    Asteroid a3(10, 2, 2);
+//    if (a3.getCenter().x != 2 && a3.getCenter().y != 2) {
+//        cout << "FAILED asteroid non-default constructor two-val point test" << endl;
+//    }
+//    Circle a4(3, 3);
+//    if (a4.getCenter().x != 3 && a4.getCenter().y != 3) {
+//        cout << "FAILED asteroid non-default constructor two-val point test" << endl;
+//    }
+//    /*********** PLANET TESTING **************/
+//    Planet p1(10);
+//    if (p1.getCenter().x != 0 && p1.getCenter().y != 0) {
+//        cout << "FAILED planet non-default constructor point test" << endl;
+//    }
+//    if (p1.getArea() != PI * 10 * 10) {
+//        cout << "FAILED planet non-default constructor area test" << endl;
+//    }
+//    if (p1.getFill().red != 0 && p1.getFill().blue != 0 && p1.getFill().green != 0) {
+//        cout << "FAILED planet non-default constructor fill test" << endl;
+//    }
+//    if (p1.getPerimeter() != 2 * PI * 10) {
+//        cout << "FAILED planet non-default constructor perimeter test" << endl;
+//    }
+//
+//    Planet p2(10, {1, 1});
+//    if (p2.getCenter().x != 1 && p2.getCenter().y != 1) {
+//        cout << "FAILED planet non-default constructor point test" << endl;
+//    }
+//    Planet p3(10, 2, 2);
+//    if (p3.getCenter().x != 2 && p3.getCenter().y != 2) {
+//        cout << "FAILED planet non-default constructor two-val point test" << endl;
+//    }
+//    Circle p4(3, 3);
+//    if (p4.getCenter().x != 3 && p4.getCenter().y != 3) {
+//        cout << "FAILED planet non-default constructor two-val point test" << endl;
+//    }
 //    /*********FUEL TANK TESTING **************/
 //
 //    fuelTank f;

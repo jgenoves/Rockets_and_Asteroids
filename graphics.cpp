@@ -21,7 +21,7 @@ enum mode {
 
 ofstream outFile("Scores.txt", ios::app);
 GLdouble width, height;
-int wd, highScore;
+int wd, highScore, maxi;
 int score = 0, money = 0;
 int rad = 15;
 mode screen;
@@ -82,15 +82,15 @@ void init() {
 
     // Initialize asteroids
     srand(time(NULL));
-    rad = 30;
+
     for (int i = 0; i < 3; i++) {
-        asteroids.push_back(Asteroid(rad, rand() % (int) width, rand() % int(height) * -6, 0.9, 0.9, 0.9));
+        asteroids.push_back(Asteroid(30, rand() % (int) width, rand() % int(height) * -6,0.8,0.8,0.8));
     }
     // Initialize Planets
     srand(time(NULL));
-    rad = 50;
+
     for (int i = 0; i < 2; i++) {
-        planets.push_back(Planet(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 0.0, 0.0));
+        planets.push_back(Planet(50, rand() % (int) width, rand() % int(height) * -2, 1.0, 0.0, 0.0));
     }
 }
 
@@ -172,23 +172,25 @@ void displayStart() {
     string message3 = "High Score: ";
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2i(180, 400);
-    for (char c: message2) {
+    for (char c: message3) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-    string HighScore;
-    ifstream inFile("scores.txt");;
-    for (int lineNo = 0; getline(inFile, HighScore) && lineNo < 50; lineNo++) {
-        cout << HighScore << endl;
+    ifstream inFile("scores.txt");
+    inFile >> highScore;
+    maxi = highScore;
+    while(!inFile.eof())
+    {
+        inFile>>highScore;
+        if (highScore > maxi)
+            maxi = highScore;
     }
+    string HighScore = to_string(maxi);
     glColor3f(1.0, 0.1, 0.1);
-    glRasterPos2i(180, 400);
+    glRasterPos2i(290, 400);
     for (char c: HighScore) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-
-
 }
-
 /********** INFO ***************/
 void displayInfo() {
     for (int i = 0; i < stars.size(); i++) {
@@ -447,7 +449,7 @@ void kbdS(int key, int x, int y) {
                 for (int i = 0; i < asteroids.size(); i++) {
                     asteroids[i].move(20, 0);
                     if (asteroids[i].getCenter().x > width) {
-                        asteroids[i].setColor(.9, .9, .9);
+                        asteroids[i].setColor(.8, .8, .8);
                         asteroids[i].setPoint(0, asteroids[i].getCenter().y);
                     }
                 }
@@ -487,7 +489,7 @@ void kbdS(int key, int x, int y) {
                 for (int i = 0; i < asteroids.size(); i++) {
                     asteroids[i].move(-20, 0);
                     if (asteroids[i].getCenter().x <0) {
-                        asteroids[i].setColor(.9, .9, .9);
+                        asteroids[i].setColor(.8, .8, .8);
                         asteroids[i].setPoint(width, asteroids[i].getCenter().y);
                     }
                 }
@@ -535,7 +537,7 @@ void kbdS(int key, int x, int y) {
                 for (int i = 0; i < asteroids.size(); i++) {
                     asteroids[i].move(0, 40);
                     if (asteroids[i].getCenter().y > height) {
-                        asteroids[i].setColor(.9, .9, .9);
+                        asteroids[i].setColor(.8, .8, .8);
                         asteroids[i].setPoint(rand() % (int) width, height * -2);
                     }
                 }

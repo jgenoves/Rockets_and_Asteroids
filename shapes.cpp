@@ -130,7 +130,7 @@ void Circle::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-   // glColor3f(0.7,0.7,0.8);
+    //glColor3f(0.7,0.7,0.8);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -207,7 +207,7 @@ void Planet::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    // glColor3f(0.7,0.7,0.8);
+    glColor3f(0.18,0.18,0.18);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -286,6 +286,7 @@ void Asteroid::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
+    glColor3f(0.18,0.18,0.18);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
