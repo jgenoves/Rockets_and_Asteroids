@@ -138,6 +138,164 @@ void Circle::draw() const {
     glEnd();
 }
 
+/******************** Planet class ********************/
+void Planet::refuel(){
+
+}
+
+void Planet::calculateArea() {
+    // A = pi*r^2
+    area = PI * radius * radius;
+}
+
+void Planet::calculatePerimeter() {
+    // Circumference = 2*pi*r
+    perimeter = 2.0 * PI * radius;
+}
+
+Planet::Planet() : Shape(), radius(0){
+}
+
+Planet::Planet(double rad) : Shape() {
+    // radius not in initializer list because
+    // we want to check for value >= 0
+    setRadius(rad);
+}
+
+Planet::Planet(double rad, point c) : Shape(c, {0, 0, 0}) {
+    setRadius(0);
+}
+
+Planet::Planet(double rad, int xIn, int yIn) :
+        Shape(xIn, yIn, 0, 0, 0) {
+    setRadius(rad);
+}
+
+Planet::Planet(point c) : Shape(c, {0, 0, 0}), radius(0) { }
+
+Planet::Planet(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
+                                       radius(0) { }
+
+Planet::Planet(color f) : Shape({0, 0}, f), radius(0) { }
+
+Planet::Planet(double r, double g, double b) :
+        Shape({0, 0}, {r, g, b}), radius(0) { }
+
+Planet::Planet(double rad, point c, color f) : Shape(c, f) {
+    setRadius(rad);
+}
+
+Planet::Planet(double rad,
+                   int xIn, int yIn,
+                   double r, double g, double b) :
+        Shape(xIn, yIn, r, g, b) {
+    setRadius(rad);
+}
+
+double Planet::getRadius() const {
+    return radius;
+}
+
+void Planet::setRadius(double rad) {
+    // radius should not be negative
+    radius = (rad < 0) ? 0 : rad;
+    // now recalculate area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Planet::draw() const {
+    glColor3f(fill.red, fill.green, fill.blue);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2i(center.x, center.y);
+    // glColor3f(0.7,0.7,0.8);
+    //TODO: Make this color inside out thing a member of the circle class
+    for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
+        glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
+    }
+    glEnd();
+}
+
+
+/******************** Asteroid class ********************/
+void Asteroid::damageHull() {
+    
+}
+
+void Asteroid::calculateArea() {
+    // A = pi*r^2
+    area = PI * radius * radius;
+}
+
+void Asteroid::calculatePerimeter() {
+    // Circumference = 2*pi*r
+    perimeter = 2.0 * PI * radius;
+}
+
+Asteroid::Asteroid() : Shape(), radius(0){
+}
+
+Asteroid::Asteroid(double rad) : Shape() {
+        // radius not in initializer list because
+        // we want to check for value >= 0
+        setRadius(rad);
+}
+
+Asteroid::Asteroid(double rad, point c) : Shape(c, {0, 0, 0}) {
+    setRadius(0);
+}
+
+Asteroid::Asteroid(double rad, int xIn, int yIn) :
+        Shape(xIn, yIn, 0, 0, 0) {
+    setRadius(rad);
+}
+
+Asteroid::Asteroid(point c) : Shape(c, {0, 0, 0}), radius(0) { }
+
+Asteroid::Asteroid(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
+                                   radius(0) { }
+
+Asteroid::Asteroid(color f) : Shape({0, 0}, f), radius(0) { }
+
+Asteroid::Asteroid(double r, double g, double b) :
+        Shape({0, 0}, {r, g, b}), radius(0) { }
+
+Asteroid::Asteroid(double rad, point c, color f) : Shape(c, f) {
+    setRadius(rad);
+}
+
+Asteroid::Asteroid(double rad,
+               int xIn, int yIn,
+               double r, double g, double b) :
+        Shape(xIn, yIn, r, g, b) {
+    setRadius(rad);
+}
+
+
+double Asteroid::getRadius() const {
+    return radius;
+}
+
+void Asteroid::setRadius(double rad) {
+    // radius should not be negative
+    radius = (rad < 0) ? 0 : rad;
+    // now recalculate area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Asteroid::draw() const {
+    glColor3f(fill.red, fill.green, fill.blue);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2i(center.x, center.y);
+    // glColor3f(0.7,0.7,0.8);
+    //TODO: Make this color inside out thing a member of the circle class
+    for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
+        glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
+    }
+    glEnd();
+}
+
 /******************** Rect class ********************/
 
 void Rect::calculateArea() {
@@ -161,20 +319,20 @@ double Rect::getWidth() const {
 double Rect::getHeight() const {
     return height;
 }
-void Rect::rotate(int degrees){
-    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y-height/2);
-    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y-height/2);
-    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y+height/2);
-    bottomLeft = point(Rect().getCenter().x-length/2, Rect().getCenter().y+height/2);
+void Rect::rotate(double degrees){
+    topRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y - height/2);
+    topLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y - height/2);
+    bottomRight = point(Rect().getCenter().x + length/2, Rect().getCenter().y + height/2);
+    bottomLeft = point(Rect().getCenter().x - length/2, Rect().getCenter().y + height/2);
 
-    topRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    topLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    topLeft.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomRight.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomRight.y += (int)sin(degrees*PI/180)+cos(degrees*PI/180);
-    bottomLeft.x += (int)cos(degrees*PI/180) - sin(degrees*PI/180);
-    bottomLeft.y -= (int)sin(degrees*PI/180)+cos(degrees*PI/180);
+    topRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    topLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    topLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomRight.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomRight.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
+    bottomLeft.x += cos((degrees*PI)/180) - sin((degrees*PI)/180);
+    bottomLeft.y += sin((degrees*PI)/180) + cos((degrees*PI)/180);
 }
 
 void Rect::setDimensions(double l, double h) {
