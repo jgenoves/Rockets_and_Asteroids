@@ -219,7 +219,7 @@ void Planet::draw() const {
 
 /******************** Asteroid class ********************/
 void Asteroid::damageHull() {
-    
+
 }
 
 void Asteroid::calculateArea() {
