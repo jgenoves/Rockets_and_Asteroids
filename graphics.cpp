@@ -77,7 +77,7 @@ void init() {
     srand(time(NULL));
     rad = 15;
     for (int i = 0; i < 5; i++) {
-        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height) * -2, 1.0, 1.0, 0.0));
+        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
     }
 
     // Initialize asteroids
@@ -353,8 +353,6 @@ void kbd(unsigned char key, int x, int y) {
     //Registers a space bar pressed
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
-
-    if (screen == game) {
         if (screen == game) {
             if (key == 32) {
                 f1.useFuel();
@@ -371,9 +369,8 @@ void kbd(unsigned char key, int x, int y) {
             }
         }
         glutPostRedisplay();
+    return;
 
-        return;
-    }
 }
 
     void kbdS(int key, int x, int y) {
@@ -454,31 +451,10 @@ void kbd(unsigned char key, int x, int y) {
                             //stars is moving off the bottom of the screen, which is bad
                             stars2[i].setPoint(width, stars2[i].getCenter().y);
                         }
-                    }
-                    for (int i = 0; i < coins.size(); i++) {
-                        coins[i].move(-20, 0);
-                        if (coins[i].getCenter().x == 0) {
-                            coins[i].setColor(1.0, 1.0, 0.0);
-                            //stars is moving off the bottom of the screen, which is bad
-                            coins[i].setPoint(width, coins[i].getCenter().y);
-                        }
-                    }
-                    for (int i = 0; i < asteroids.size(); i++) {
-                        asteroids[i].move(-20, 0);
-                        if (asteroids[i].getCenter().x == 0) {
-                            asteroids[i].setColor(.9, .9, .9);
-                            asteroids[i].setPoint(width, asteroids[i].getCenter().y);
-                        }
-                    }
-                    for (int i = 0; i < planets.size(); i++) {
-                        planets[i].move(-10, 0);
-                        if (planets[i].getCenter().x == 0) {
-                            planets[i].setColor(.9, .9, .9);
-                            planets[i].setPoint(width, planets[i].getCenter().y);
-                        }
-                    }
-                    p2.move(-10, 0);
-                    break;
+                }
+                p2.move(-10,0);
+                break;
+     
                 case GLUT_KEY_UP:
                     myRectangle.move(0, -20);
 
@@ -630,7 +606,6 @@ void kbd(unsigned char key, int x, int y) {
 
         glutTimerFunc(0, timer, 0);
         //  glutTimerFunc(0, timer1, 0);
-
 
         // Enter the event-processing loop
         glutMainLoop();

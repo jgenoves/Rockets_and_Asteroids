@@ -1,21 +1,25 @@
+
 //
 // Created by Thomas Stockham on 4/5/18.
 // Edited by Jordan Genovese on 4/17/18
 //
 
 #include "rocket.h"
+#include "shapes.h"
 
 Rocket::Rocket() : hullStat(notDamaged), hullHealth(100), FuelTank(100){
-    Rect baseRect();
+    Rect baseRect;
 }
 
-hullStatus Rocket::getHulLStat() const {
+hullStatus Rocket::getHullStat() const {
     return notDamaged;
 }
+
 int Rocket::getPosX() const {
     point p = baseRect.getCenter();
     return p.x ;
 }
+
 
 int Rocket::getPosY() const {
     point p = baseRect.getCenter();
@@ -28,19 +32,19 @@ double Rocket::getFuelTank() const {
 
 void Rocket::setFuelTank(double fuelAmount) {
     if(FuelTank + fuelAmount > 100){
-        FuelTank == 100;
+        FuelTank = 100;
     }else if(FuelTank + fuelAmount < 0){
-        FuelTank == 0;
+        FuelTank = 0;
     }else{
         FuelTank += fuelAmount;
     }
 }
 
 void Rocket::setFuelTankToFull() {
-    FuelTank == 100;
+    FuelTank = 100;
 }
 
-void Rocket::sethullStat(const hullStatus h) {
+void Rocket::sethullStat(hullStatus h) {
     hullStat = h;
 }
 
@@ -80,3 +84,4 @@ void Rocket::drawRocket() {
 
 
 }
+
