@@ -26,6 +26,11 @@ struct point {
     point();
     point(int xIn, int yIn);
 };
+enum hullStatus {notDamaged, Damaged, veryDamaged };
+
+//Enum used to determine which direction the Rocket should move in
+enum direction {up, down, left, right};
+
 
 // Note: a line is not considered a shape because it
 //       does not have an area
@@ -193,6 +198,60 @@ public:
     // Note: this method will also recalculate area and perimeter
     void setDimensions(double l, double h);
 
+    void draw() const override;
+};
+/******** ROCKET **********/
+
+class Rocket : public Shape {
+private:
+
+    hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
+    double FuelTank; // 100 is full fuel
+    double hullHealth; //100 is full health
+    double length;
+    double height;
+    void calculateArea() override;
+    void calculatePerimeter() override;
+    //Center coordinates for the rocket
+public:
+
+    //Default Constructor for the rocket. Note, this
+    //is the only constructor, and will assemble and draw all the
+    //shapes to the correct dimensions for the parts.
+    //This also initializes the rocket fuel supply to full.
+    Rocket();
+    Rocket(hullStatus h, int health, int fuel);
+    Rocket(double h, double l, hullStatus hs, int health, int fuel);
+
+    //getters
+    hullStatus getHullStat() const;
+    double getFuelTank() const;
+
+    double getHeight() const;
+    double getWidth() const;
+
+    // Setter
+    // Note: this method will also recalculate area and perimeter
+    void setDimensions(double l, double h);
+
+    /**
+     * R: amount to add to fuel tank
+     * M: FuelTank amount
+     * E: adds fuelAmount to fuel tank. This is performed when
+     *      the rocket collects a fuel supply in the level.
+     *      Note: fuel supply cannot exceed 100 in valye
+     */
+    void setFuelTank(double fuelAmount);
+
+    /**
+     * R: nothing
+     * M: FuelTank amount
+     * E: this will set the FuelTank value to 100.
+     */
+    void setFuelTankToFull();
+
+    //setter for hullStat
+    void sethullStat(hullStatus h);
     void draw() const override;
 };
 

@@ -131,7 +131,6 @@ void Circle::draw() const {
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
    // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -209,7 +208,6 @@ void Planet::draw() const {
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
     // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -288,8 +286,6 @@ void Asteroid::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -362,4 +358,82 @@ void Rect::draw() const {
     glEnd();
 }
 
+/*********** ROCKET CLASS **************/
+Rocket::Rocket() {
+    sethullStat(notDamaged);
+    setFuelTankToFull();
+    setDimensions(20,40);
+}
+
+Rocket::Rocket(hullStatus h, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+    setDimensions(20,40);
+}
+Rocket :: Rocket(double h, double l, hullStatus hs, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+    setDimensions(l,h);
+}
+void Rocket::calculateArea() {
+    area = length * height;
+}
+void Rocket::calculatePerimeter() {
+    perimeter = 2.0 * length + 2.0 * height;
+}
+
+void Rocket::setFuelTank(double fuelAmount) {
+    if(FuelTank + fuelAmount > 100){
+        FuelTank = 100;
+    }else if(FuelTank + fuelAmount < 0){
+        FuelTank = 0;
+    }else{
+        FuelTank += fuelAmount;
+    }
+}
+
+void Rocket::setFuelTankToFull() {
+    FuelTank = 100;
+}
+
+void Rocket::sethullStat(hullStatus h) {
+    hullStat = h;
+}
+hullStatus Rocket ::getHullStat() const {
+    return hullStat;
+}
+
+double Rocket::getWidth() const {
+    return length;
+}
+
+double Rocket::getHeight() const {
+    return height;
+}
+void Rocket::setDimensions(double l, double h) {
+    // we do not want to accept negative values
+    // for length and width
+    length = (l < 0) ? 0 : l;
+    height = (h < 0) ? 0 : h;
+    // now update area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Rocket::draw() const{
+
+    if(hullStat == notDamaged) {
+        glColor3f(fill.red, fill.green, fill.blue);
+        glBegin(GL_QUADS);
+        //top left
+        glVertex2i(center.x-(length/2.0),center.y-(height/2.0));
+        //top right
+        glVertex2i(center.x+(length/2), center.y-(height/2.0));
+
+        //bottom right
+        glVertex2i(center.x+(length/2),center.y+(height/2.0));
+
+        //bottom left
+        glVertex2i(center.x-(length/2.0),center.y+(height/2.0));
+
+        glEnd();
+        //TODO: Draw rest of rocket relative to coordinates of the baseRect
+    }
+}
 
