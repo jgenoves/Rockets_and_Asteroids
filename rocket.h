@@ -7,6 +7,7 @@
 
 #include "shapes.h"
 #include "graphics.h"
+#include "fueltank.h"
 
 //Possibility? Use this enum to determine how the rocket should look based on health.
 enum hullStatus {notDamaged, Damaged, veryDamaged };

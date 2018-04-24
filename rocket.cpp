@@ -6,7 +6,10 @@
 #include "rocket.h"
 #include "shapes.h"
 
-Rocket::Rocket() : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+
+
+Rocket::Rocket() : hullStat(notDamaged), hullHealth(100){
+    fuelTank baseFuel();
     Rect baseRect();
 }
 
@@ -23,7 +26,7 @@ int Rocket::getPosY() const {
     return p.y ;
 }
 
-double Rocket::getFuelTank() const {
+/*double Rocket::getFuelTank() const {
     return 0;
 }
 
@@ -39,7 +42,7 @@ void Rocket::setFuelTank(double fuelAmount) {
 
 void Rocket::setFuelTankToFull() {
     FuelTank == 100;
-}
+}*/
 
 void Rocket::sethullStat(const hullStatus h) {
     hullStat = h;
