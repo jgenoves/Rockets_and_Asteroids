@@ -173,14 +173,16 @@ void displayGame() {
     //TODO: Make the overlapping planets and rectangles set fuel to full, why is set fuel tank to full not working?
     // function to set fuel tank to full
 
+    /*
     for (int i = 0; i < planets.size(); i++) {
         if (isOverlappingPlanRect(planets[i], myRectangle)) {
             planets[i].setColor(1.0, 0.02, 0.5);
             //setFuelTankToFull();
         }
-    }
+    }*/
 
     //TODO: Make asteroids affect hull status and go to endgame, why is hullstat not working?
+    /*
     for (int i = 0; i < asteroids.size(); i++) {
         if (isOverlappingAstRect(asteroids[i], myRectangle)) {
             if (hullStatus == notDamaged) {
@@ -191,7 +193,7 @@ void displayGame() {
                 screen == endgame;
             }
         }
-    }
+    }*/
 
 
     for (int i = 0; i < planets.size(); i++) {
