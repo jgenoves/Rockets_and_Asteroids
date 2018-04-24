@@ -28,19 +28,19 @@ private:
 
 public:
 
-    //Default Constructor for the rocket. Note, this
+    //Non-Default Constructor for the rocket. Note, this
     //is the only constructor, and will assemble and draw all the
     //shapes to the correct dimensions for the parts.
     //This also initializes the rocket fuel supply to full.
     Rocket();
 
     //getters
-    hullStatus getHullStat() const;
+    hullStatus getHulLStat() const;
     double getFuelTank() const;
     int getPosX() const;
     int getPosY() const;
 
-    /**
+    /*
      * R: amount to add to fuel tank
      * M: FuelTank amount
      * E: adds fuelAmount to fuel tank. This is performed when
@@ -49,7 +49,7 @@ public:
      */
     void setFuelTank(double fuelAmount);
 
-    /**
+    /*
      * R: nothing
      * M: FuelTank amount
      * E: this will set the FuelTank value to 100.
@@ -57,11 +57,11 @@ public:
     void setFuelTankToFull();
 
     //setter for hullStat
-    void sethullStat(hullStatus h);
+    void sethullStat(const hullStatus h);
     void setRocketPos(int x, int y);
 
 
-    /**
+    /*
      * R:
      * M: rocket's graphical shapes and FuelTank amount
      * E:  Moves rocket's location on the map (moves all rocket's shapes
@@ -72,12 +72,15 @@ public:
      */
     void move(direction d);
 
-    /**
+    /*
      * R: nothing
      * M: rockets shapes
      * E: draws the rocket on the screen
      */
     void drawRocket();
+
+
+
 
 };
 

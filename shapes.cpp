@@ -130,8 +130,7 @@ void Circle::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-   // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
+    //glColor3f(0.7,0.7,0.8);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -174,7 +173,7 @@ Planet::Planet(double rad, int xIn, int yIn) :
 Planet::Planet(point c) : Shape(c, {0, 0, 0}), radius(0) { }
 
 Planet::Planet(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
-                                       radius(0) { }
+                                   radius(0) { }
 
 Planet::Planet(color f) : Shape({0, 0}, f), radius(0) { }
 
@@ -186,8 +185,8 @@ Planet::Planet(double rad, point c, color f) : Shape(c, f) {
 }
 
 Planet::Planet(double rad,
-                   int xIn, int yIn,
-                   double r, double g, double b) :
+               int xIn, int yIn,
+               double r, double g, double b) :
         Shape(xIn, yIn, r, g, b) {
     setRadius(rad);
 }
@@ -208,8 +207,7 @@ void Planet::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
+    glColor3f(0.18,0.18,0.18);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -236,9 +234,9 @@ Asteroid::Asteroid() : Shape(), radius(0){
 }
 
 Asteroid::Asteroid(double rad) : Shape() {
-        // radius not in initializer list because
-        // we want to check for value >= 0
-        setRadius(rad);
+    // radius not in initializer list because
+    // we want to check for value >= 0
+    setRadius(rad);
 }
 
 Asteroid::Asteroid(double rad, point c) : Shape(c, {0, 0, 0}) {
@@ -253,7 +251,7 @@ Asteroid::Asteroid(double rad, int xIn, int yIn) :
 Asteroid::Asteroid(point c) : Shape(c, {0, 0, 0}), radius(0) { }
 
 Asteroid::Asteroid(int xIn, int yIn) : Shape(xIn, yIn, 0, 0, 0),
-                                   radius(0) { }
+                                       radius(0) { }
 
 Asteroid::Asteroid(color f) : Shape({0, 0}, f), radius(0) { }
 
@@ -265,8 +263,8 @@ Asteroid::Asteroid(double rad, point c, color f) : Shape(c, f) {
 }
 
 Asteroid::Asteroid(double rad,
-               int xIn, int yIn,
-               double r, double g, double b) :
+                   int xIn, int yIn,
+                   double r, double g, double b) :
         Shape(xIn, yIn, r, g, b) {
     setRadius(rad);
 }
@@ -288,8 +286,7 @@ void Asteroid::draw() const {
     glColor3f(fill.red, fill.green, fill.blue);
     glBegin(GL_TRIANGLE_FAN);
     glVertex2i(center.x, center.y);
-    // glColor3f(0.7,0.7,0.8);
-    //TODO: Make this color inside out thing a member of the circle class
+    glColor3f(0.18,0.18,0.18);
     for(double i =0;i<=2.0*PI+0.05;i+=(2.0*PI/360.0)){
         glVertex2i(center.x+(radius*cos(i)), center.y+(radius*sin(i)));
     }
@@ -362,4 +359,81 @@ void Rect::draw() const {
     glEnd();
 }
 
+/*********** ROCKET CLASS **************/
+Rocket::Rocket() {
+    sethullStat(notDamaged);
+    setFuelTankToFull();
+    setDimensions(20,40);
+}
 
+Rocket::Rocket(hullStatus h, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+    setDimensions(20,40);
+}
+Rocket :: Rocket(double h, double l, hullStatus hs, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
+    setDimensions(l,h);
+}
+void Rocket::calculateArea() {
+    area = length * height;
+}
+void Rocket::calculatePerimeter() {
+    perimeter = 2.0 * length + 2.0 * height;
+}
+
+void Rocket::setFuelTank(double fuelAmount) {
+    if(FuelTank + fuelAmount > 100){
+        FuelTank = 100;
+    }else if(FuelTank + fuelAmount < 0){
+        FuelTank = 0;
+    }else{
+        FuelTank += fuelAmount;
+    }
+}
+
+void Rocket::setFuelTankToFull() {
+    FuelTank = 100;
+}
+
+void Rocket::sethullStat(hullStatus h) {
+    hullStat = h;
+}
+hullStatus Rocket ::getHullStat() const {
+    return hullStat;
+}
+
+double Rocket::getWidth() const {
+    return length;
+}
+
+double Rocket::getHeight() const {
+    return height;
+}
+void Rocket::setDimensions(double l, double h) {
+    // we do not want to accept negative values
+    // for length and width
+    length = (l < 0) ? 0 : l;
+    height = (h < 0) ? 0 : h;
+    // now update area and perimeter
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Rocket::draw() const{
+
+    if(hullStat == notDamaged) {
+        glColor3f(fill.red, fill.green, fill.blue);
+        glBegin(GL_QUADS);
+        //top left
+        glVertex2i(center.x-(length/2.0),center.y-(height/2.0));
+        //top right
+        glVertex2i(center.x+(length/2), center.y-(height/2.0));
+
+        //bottom right
+        glVertex2i(center.x+(length/2),center.y+(height/2.0));
+
+        //bottom left
+        glVertex2i(center.x-(length/2.0),center.y+(height/2.0));
+
+        glEnd();
+        //TODO: Draw rest of rocket relative to coordinates of the baseRect
+    }
+}
