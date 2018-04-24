@@ -26,6 +26,11 @@ struct point {
     point();
     point(int xIn, int yIn);
 };
+enum hullStatus {notDamaged, Damaged, veryDamaged };
+
+//Enum used to determine which direction the Rocket should move in
+enum direction {up, down, left, right};
+
 
 // Note: a line is not considered a shape because it
 //       does not have an area
@@ -100,6 +105,62 @@ public:
     void draw() const override;
 };
 
+class Asteroid : public Shape {
+protected:
+    double radius;
+
+    void damageHull();
+    void calculateArea() override;
+    void calculatePerimeter() override;
+public:
+    Asteroid();
+    explicit Asteroid(double rad);
+    Asteroid(double rad, point c);
+    Asteroid(double rad, int xIn, int yIn);
+    explicit Asteroid(point c);
+    Asteroid(int xIn, int yIn);
+    explicit Asteroid(color f);
+    Asteroid(double r, double g, double b);
+    Asteroid(double rad, point c, color f);
+    Asteroid(double rad, int xIn, int yIn, double r, double g, double b);
+
+    // Getter
+    double getRadius() const;
+
+    // Setter
+    void setRadius(double rad);
+
+    void draw() const override;
+};
+
+class Planet : public Shape {
+protected:
+    double radius;
+
+    void refuel();
+    void calculateArea() override;
+    void calculatePerimeter() override;
+public:
+    Planet();
+    explicit Planet(double rad);
+    Planet(double rad, point c);
+    Planet(double rad, int xIn, int yIn);
+    explicit Planet(point c);
+    Planet(int xIn, int yIn);
+    explicit Planet(color f);
+    Planet(double r, double g, double b);
+    Planet(double rad, point c, color f);
+    Planet(double rad, int xIn, int yIn, double r, double g, double b);
+
+    // Getter
+    double getRadius() const;
+
+    // Setter
+    void setRadius(double rad);
+
+    void draw() const override;
+};
+
 class Rect : public Shape {
 private:
     double length;
@@ -139,27 +200,61 @@ public:
 
     void draw() const override;
 };
+/******** ROCKET **********/
 
-class Planet : public Circle{
+class Rocket : public Shape {
 private:
+
+    hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
+    double FuelTank; // 100 is full fuel
+    double hullHealth; //100 is full health
+    double length;
+    double height;
+    void calculateArea() override;
+    void calculatePerimeter() override;
+    //Center coordinates for the rocket
 public:
-    Planet();
 
+    //Default Constructor for the rocket. Note, this
+    //is the only constructor, and will assemble and draw all the
+    //shapes to the correct dimensions for the parts.
+    //This also initializes the rocket fuel supply to full.
+    Rocket();
+    Rocket(hullStatus h, int health, int fuel);
+    Rocket(double h, double l, hullStatus hs, int health, int fuel);
+
+    //getters
+    hullStatus getHullStat() const;
+    double getFuelTank() const;
+
+    double getHeight() const;
+    double getWidth() const;
+
+    // Setter
+    // Note: this method will also recalculate area and perimeter
+    void setDimensions(double l, double h);
+
+    /**
+     * R: amount to add to fuel tank
+     * M: FuelTank amount
+     * E: adds fuelAmount to fuel tank. This is performed when
+     *      the rocket collects a fuel supply in the level.
+     *      Note: fuel supply cannot exceed 100 in valye
+     */
+    void setFuelTank(double fuelAmount);
+
+    /**
+     * R: nothing
+     * M: FuelTank amount
+     * E: this will set the FuelTank value to 100.
+     */
+    void setFuelTankToFull();
+
+    //setter for hullStat
+    void sethullStat(hullStatus h);
+    void draw() const override;
 };
 
-class Asteroid : public Circle{
-private:
-public:
-    Asteroid();
-
-};
-
-
-class Triangle : public Shape {
-private:
-    int s1, s2, s3;
-
-};
 
 
 

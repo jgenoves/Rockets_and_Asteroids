@@ -35,7 +35,9 @@ double distance (const point &p1, const point &p2);
 bool isOverlapping(const point &p, const Circle &c);
 bool isOverlappingCircles(const Circle &c1, const Circle &c2);
 bool isOverlappingCirRect(const Circle &c, const Rect &r);
-
+bool isOverlappingCirRock(const Circle &c, const Rocket &r);
+bool isOverlappingPlanRock(const Planet &p, const Rocket &r);
+bool isOverlappingAstRock(const Asteroid &a, const Rocket &r);
 
 // Draw the window - this is where all the GL actions are
 void display(void);
