@@ -295,15 +295,15 @@ void Asteroid::draw() const {
 
 /******************** Planet class ********************/
 
-Planet::Planet(): Circle() {
-
-}
+//Planet::Planet(): Circle() {
+//
+//}
 
 /******************** Asteroid class ********************/
 
-Asteroid::Asteroid() : Circle() {
-
-}
+//Asteroid::Asteroid() : Circle() {
+//
+//}
 
 /******************** Rect class ********************/
 

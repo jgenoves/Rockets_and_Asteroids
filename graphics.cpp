@@ -33,6 +33,7 @@ vector<Circle> stars2;
 vector<Circle> coins;
 vector<Asteroid> asteroids;
 vector<Planet> planets;
+int remFuel = f1.getFuel();
 
 
 void init() {
@@ -190,6 +191,7 @@ void displayStart() {
     for (char c: HighScore) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
+
 }
 /********** INFO ***************/
 void displayInfo() {
@@ -304,6 +306,18 @@ void displayGame() {
     glColor3f(1.0, 1.0, 0.0);
     glRasterPos2i(420, 20);
     for (char c: to_string(money)) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+    string fuelTankBar = "Fuel: ";
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(20, 700);
+    for (char c: fuelTankBar) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(75, 700);
+    for (char c: to_string(remFuel)) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
     //draw objects
