@@ -392,8 +392,8 @@ void Rocket::calculatePerimeter() {
 }
 
 void Rocket::setFuelTank(double fuelAmount) {
-    if(FuelTank + fuelAmount > 100){
-        FuelTank = 100;
+    if(FuelTank + fuelAmount > 200){
+        FuelTank = 200;
     }else if(FuelTank + fuelAmount < 0){
         FuelTank = 0;
     }else{

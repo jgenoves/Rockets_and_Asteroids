@@ -24,6 +24,7 @@ GLdouble width, height;
 int wd, highScore, maxi;
 int score = 0, money = 0;
 int rad = 15;
+int fuel = 250;
 mode screen;
 Rocket rock;
 Circle myCircle, c1, c2, c3, p1, p2;
@@ -45,7 +46,7 @@ void init() {
     //initialize rectangle
     rock.setDimensions(20.0, 40.0);
     rock.setColor(1.0, 1.0, 1.0);
-    rock.setPoint((width / 2) - (int)rock.getWidth()/2, (height-10) - (int) rock.getHeight());
+    rock.setPoint((width / 2) - (int) rock.getWidth() / 2, (height - 10) - (int) rock.getHeight());
 
     //Initialize Circle
     myCircle.setRadius(50.0);
@@ -85,7 +86,7 @@ void init() {
     srand(time(NULL));
 
     for (int i = 0; i < 3; i++) {
-        asteroids.push_back(Asteroid(30, rand() % (int) width, rand() % int(height) * -6,0.8,0.8,0.8));
+        asteroids.push_back(Asteroid(30, rand() % (int) width, rand() % int(height) * -6, 0.8, 0.8, 0.8));
     }
     // Initialize Planets
     srand(time(NULL));
@@ -100,6 +101,7 @@ void initGL() {
     // Set "clearing" or background color
     glClearColor(0.02f, 0.02f, 0.17f, 1.0f); // Blue and opaque
 }
+
 /*********** OVERLAPPING STUFF ****************/
 
 bool isOverlapping(const point &p, const Rect &r) {
@@ -137,6 +139,7 @@ bool isOverlappingCirRect(const Circle &c, const Rect &r) {
     return ((c.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, c.getCenter().y}, r.getCenter()) &&
             (c.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, c.getCenter().y}, c.getCenter()));
 }
+
 bool isOverlappingCirRock(const Circle &c, const Rocket &r) {
     return ((c.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, c.getCenter().y}, r.getCenter()) &&
             (c.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, c.getCenter().y}, c.getCenter()));
@@ -179,9 +182,8 @@ void displayStart() {
     ifstream inFile("scores.txt");
     inFile >> highScore;
     maxi = highScore;
-    while(!inFile.eof())
-    {
-        inFile>>highScore;
+    while (!inFile.eof()) {
+        inFile >> highScore;
         if (highScore > maxi)
             maxi = highScore;
     }
@@ -193,6 +195,7 @@ void displayStart() {
     }
 
 }
+
 /********** INFO ***************/
 void displayInfo() {
     for (int i = 0; i < stars.size(); i++) {
@@ -266,7 +269,6 @@ void displayGame() {
     }
 
 
-
     for (int i = 0; i < stars2.size(); i++) {
         stars2[i].draw();
     }
@@ -325,7 +327,22 @@ void displayGame() {
     rock.draw();
 }
 
-void displayEnd() {}
+void displayEnd() {
+    string message = "Game Over!";
+    glColor3f(1.0, 0.0, 0.0);
+    glRasterPos2i(200, 300);
+    for (char c: message) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+    if (fuel == 0){
+        string messagef = "You ran out of fuel";
+        glColor3f(1.0, 0.0, 0.0);
+        glRasterPos2i(200, 350);
+        for (char c: messagef) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+        }
+    }
+}
 
 /* Handler for window-repaint event. Call back when the window first appears and
  whenever the window needs to be re-painted. */
@@ -439,8 +456,12 @@ void kbdS(int key, int x, int y) {
 
                 //rock.rotate(15);
                 //rock.move(-20, 0);
+                rock.setFuelTank(fuel--);
+                if (fuel == 0){
+                    screen = endgame;
+                }
                 if (rock.getCenter().x < 0) {
-                    rock.setPoint(width+rock.getWidth()/2, rock.getCenter().y);
+                    rock.setPoint(width + rock.getWidth() / 2, rock.getCenter().y);
                 }
                 for (int i = 0; i < stars2.size(); i++) {
                     stars2[i].move(stars2[i].getRadius() * 2, 0);
@@ -479,6 +500,10 @@ void kbdS(int key, int x, int y) {
             case GLUT_KEY_RIGHT:
                 //rock.move(30,0);
                 //rock.rotate(15);
+                rock.setFuelTank(fuel--);
+                if (fuel == 0){
+                    screen = endgame;
+                }
                 if (rock.getCenter().x > width) {
                     rock.setPoint(0, rock.getCenter().y);
                 }
@@ -502,14 +527,14 @@ void kbdS(int key, int x, int y) {
                 }
                 for (int i = 0; i < asteroids.size(); i++) {
                     asteroids[i].move(-20, 0);
-                    if (asteroids[i].getCenter().x <0) {
+                    if (asteroids[i].getCenter().x < 0) {
                         asteroids[i].setColor(.8, .8, .8);
                         asteroids[i].setPoint(width, asteroids[i].getCenter().y);
                     }
                 }
                 for (int i = 0; i < planets.size(); i++) {
                     planets[i].move(-10, 0);
-                    if (planets[i].getCenter().x <0) {
+                    if (planets[i].getCenter().x < 0) {
                         planets[i].setColor(1.0, 0.0, 0.1);
                         planets[i].setPoint(width, planets[i].getCenter().y);
                     }
@@ -519,7 +544,10 @@ void kbdS(int key, int x, int y) {
 
             case GLUT_KEY_UP:
                 rock.move(0, -20);
-
+                rock.setFuelTank(fuel--);
+                if (fuel == 0){
+                    screen = endgame;
+                }
                 p2.move(0, 10);
                 score++;
                 glColor3f(1.0, 1.0, 0.0);
@@ -534,7 +562,7 @@ void kbdS(int key, int x, int y) {
                     if (coins[i].getCenter().y > height) {
                         //stars is moving off the bottom of the screen, which is bad
                         coins[i].setColor(1.0, 1.0, 0.0);
-                        coins[i].setPoint(rand() % (int) width, -height);
+                        coins[i].setPoint(rand() % (int) width, 0);
                     }
                 }
                 for (int i = 0; i < stars2.size(); i++) {
@@ -591,6 +619,7 @@ void mouse(int button, int state, int x, int y) {
 
 void timer(int extra) {
 //make the stars fall
+
     for (int i = 0; i < stars.size(); i++) {
         stars[i].move(0, stars[i].getRadius());
         if (stars[i].getCenter().y > height) {
@@ -598,37 +627,59 @@ void timer(int extra) {
             stars[i].setPoint(stars[i].getCenter().x, 0);
         }
     }
+    //if (screen == game) {
+
     glutPostRedisplay();
     //glutTimerFunc waits for 40 milliseconds before it calls itself.
-    glutTimerFunc(40, timer, 0);
+    if (screen == start || screen == info) {
+        glutTimerFunc(40, timer, 0);
+    }
 }
 
-void timer1(int extra1) {
-    if (extra1 == 0) {
+void timer1(int extra) {
+
+    if (extra == 0) {
         rad--;
         for (int i = 0; i < coins.size(); i++) {
             coins[i].setRadius(rad);
-            if (rad == 1) {
-                glutTimerFunc(40, timer1, 1);
-            } else {
-                glutTimerFunc(40, timer1, 0);
-            }
         }
-    } else if (extra1 == 1) {
+        if (rad == 1) {
+            glutPostRedisplay();
+            glutTimerFunc(40, timer1, 1);
+        } else {
+            glutPostRedisplay();
+            glutTimerFunc(40, timer1, 0);
+        }
+    } else if (extra == 1) {
         rad++;
         for (int i = 0; i < coins.size(); i++) {
             coins[i].setRadius(rad);
-            if (rad == 20) {
-                glutTimerFunc(40, timer1, 0);
-            } else {
-                glutTimerFunc(40, timer1, 1);
-            }
         }
-    }
+        if (rad == 15) {
+            glutPostRedisplay();
+            glutTimerFunc(40, timer1, 0);
+        }
+        else {
+            glutPostRedisplay();
+            glutTimerFunc(40, timer1, 1);
+        }
 
-    glutPostRedisplay();
+    }
+//    glutPostRedisplay();
     //glutTimerFunc waits for 40 milliseconds before it calls itself.
-    glutTimerFunc(40, timer1, 0);
+//    if (screen == game) {
+//        glutTimerFunc(40, timer1, extra);
+//    }
+}
+
+void timer2(int extra){
+    for (int i = 0; i < asteroids.size(); i++) {
+        // make the asteroids move randomly
+        asteroids[i].move(rand() % 15 - 7, rand() % 20 - 5);
+    }
+        glutPostRedisplay();
+        //glutTimerFunc waits for 40 milliseconds before it calls itself.
+        glutTimerFunc(40, timer2, 0);
 }
 
 /* Main function: GLUT runs as a console application starting at main()  */
@@ -669,6 +720,8 @@ int main(int argc, char **argv) {
     // handles timer
 
     glutTimerFunc(0, timer, 0);
+    glutTimerFunc(0, timer1, 0);
+    glutTimerFunc(40, timer2, 0);
     //  glutTimerFunc(0, timer1, 0);
 
     // Enter the event-processing loop
