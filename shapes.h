@@ -26,7 +26,7 @@ struct point {
     point();
     point(int xIn, int yIn);
 };
-enum hullStatus {notDamaged, Damaged, veryDamaged };
+enum hullStatus {notDamaged, Damaged, veryDamaged, Destroyed};
 
 //Enum used to determine which direction the Rocket should move in
 enum direction {up, down, left, right};
