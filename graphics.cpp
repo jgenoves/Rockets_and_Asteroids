@@ -320,11 +320,11 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
-    glColor3f(1.0, 1.0, 0.0);
-    glRasterPos2i(75, 700);
-    for (char c: to_string(f1.getFuel())) {
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
-    }
+//    glColor3f(1.0, 1.0, 0.0);
+//    glRasterPos2i(75, 700);
+//    for (char c: to_string(rock.getFuelTank())) {
+//        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+//    }
 
     string speedRead = "Speed: ";
     glColor3f(1.0, 1.0, 0.0);
@@ -333,19 +333,19 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
-    string formatSpeed;
-    stringstream ss;
-    ss << setprecision(3) << speed;
-    ss >> formatSpeed;
-    //This (above) just creates a var version of speed
-    //That is formatted so it doesnt print out inf decimals.
-
-    glColor3f(1.0, 1.0, 0.0);
-    glRasterPos2i(425, 700);
-    //string s1 = to_string(speed);
-    for (char c: formatSpeed) {
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
-    }
+//    string formatSpeed;
+//    stringstream ss;
+//    ss << setprecision(3) << speed;
+//    ss >> formatSpeed;
+//    //This (above) just creates a var version of speed
+//    //That is formatted so it doesnt print out inf decimals.
+//
+//    glColor3f(1.0, 1.0, 0.0);
+//    glRasterPos2i(425, 700);
+//    //string s1 = to_string(speed);
+//    for (char c: formatSpeed) {
+//        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+//    }
 
     //draw objects
     //myCircle.draw();
