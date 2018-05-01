@@ -377,18 +377,33 @@ void displayPause(){
 void displayEnd() {
     string message = "Game Over!";
     glColor3f(1.0, 0.0, 0.0);
-    glRasterPos2i(200, 300);
+    glRasterPos2i(180, 300);
     for (char c: message) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     if (fuel == 0){
         string messagef = "You ran out of fuel";
         glColor3f(1.0, 0.0, 0.0);
-        glRasterPos2i(200, 350);
+        glRasterPos2i(180, 350);
         for (char c: messagef) {
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
         }
     }
+    if (rock.getHullStat() == Destroyed){
+        string messagea = "You ran into an asteroid!";
+        glColor3f(1.0, 0.0, 0.0);
+        glRasterPos2i(180, 350);
+        for (char c: messagea) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+        }
+    }
+    string message2 = "Press 'r' to restart";
+    glColor3f(1.0, 0.0, 0.0);
+    glRasterPos2i(180, 380);
+    for (char c: message2) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
 }
 
 /* Handler for window-repaint event. Call back when the window first appears and
@@ -467,6 +482,7 @@ void kbd(unsigned char key, int x, int y) {
                 screen = pause;
         }
     }
+
     glutPostRedisplay();
     return;
 
