@@ -472,6 +472,7 @@ void kbd(unsigned char key, int x, int y) {
 }
 
 void kbdS(int key, int x, int y) {
+    GLUT_KEY_REPEAT_ON;
     if (screen == game) {
         switch (key) {
             /* case GLUT_KEY_DOWN:

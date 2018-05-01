@@ -5,6 +5,7 @@
 #ifndef GRAPHICS_FUELTANK_H
 #define GRAPHICS_FUELTANK_H
 
+
 class fuelTank {
 private:
     int fuel;
@@ -17,7 +18,6 @@ public:
     void setFuel(int f);
 
     void useFuel();
-    bool hasFuel();
 };
 
 
