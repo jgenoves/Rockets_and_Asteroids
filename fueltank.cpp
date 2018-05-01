@@ -21,7 +21,7 @@ void fuelTank::setFuel(int f) {
 
 void fuelTank::useFuel() {
     if (fuel > 0) {
-        fuel--;
+        fuel = fuel - 25;
     }
 }
 
