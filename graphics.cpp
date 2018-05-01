@@ -418,6 +418,7 @@ void kbd(unsigned char key, int x, int y) {
 }
 
 void kbdS(int key, int x, int y) {
+    GLUT_KEY_REPEAT_ON;
     if (screen == game) {
         switch (key) {
             /* case GLUT_KEY_DOWN:
@@ -668,6 +669,9 @@ void timer2(int extra){
         glutTimerFunc(40, timer2, 0);
 }
 
+
+
+
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char **argv) {
 
@@ -708,7 +712,7 @@ int main(int argc, char **argv) {
     glutTimerFunc(0, timer, 0);
     glutTimerFunc(0, timer1, 0);
     glutTimerFunc(40, timer2, 0);
-    //  glutTimerFunc(0, timer1, 0);
+
 
     // Enter the event-processing loop
     glutMainLoop();

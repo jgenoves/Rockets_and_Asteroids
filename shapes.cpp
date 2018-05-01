@@ -434,6 +434,32 @@ void Rocket::draw() const{
         glVertex2i(center.x-(length/2.0),center.y+(height/2.0));
 
         glEnd();
+
+        glColor3f(1.0,0,0);
+        glBegin(GL_TRIANGLES);
+        glVertex2i(center.x-(length/2.0), center.y-(height/2));
+        glVertex2i(center.x, center.y-((height/2)+20));
+        glVertex2i(center.x+(length/2), center.y-(height/2));
+        glEnd();
+
+        glColor3f(1.0,0,0);
+        glBegin(GL_TRIANGLES);
+        glVertex2i(center.x-(length/2.0), center.y+(height/2));
+        glVertex2i(center.x-(length/2), center.y);
+        glVertex2i(center.x-(length/2) - 10, center.y+(height/2));
+
+        glEnd();
+
+        glColor3f(1.0,0,0);
+        glBegin(GL_TRIANGLES);
+        glVertex2i(center.x+(length/2.0), center.y+(height/2));
+        glVertex2i(center.x+(length/2), center.y);
+        glVertex2i(center.x+(length/2) + 10, center.y+(height/2));
+
+        glEnd();
+
+
+
         //TODO: Draw rest of rocket relative to coordinates of the baseRect
     }
 }
