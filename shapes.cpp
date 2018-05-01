@@ -293,6 +293,18 @@ void Asteroid::draw() const {
     glEnd();
 }
 
+/******************** Planet class ********************/
+
+//Planet::Planet(): Circle() {
+//
+//}
+
+/******************** Asteroid class ********************/
+
+//Asteroid::Asteroid() : Circle() {
+//
+//}
+
 /******************** Rect class ********************/
 
 void Rect::calculateArea() {
@@ -457,8 +469,6 @@ void Rocket::draw() const{
         glVertex2i(center.x+(length/2) + 10, center.y+(height/2));
 
         glEnd();
-
-
 
         //TODO: Draw rest of rocket relative to coordinates of the baseRect
     }
