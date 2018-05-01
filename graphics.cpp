@@ -235,7 +235,7 @@ void displayInfo() {
 
 /***************** GAME ****************/
 void displayGame() {
-    if(f1.getFuel() == 0){
+    if(f1.getFuel() == 0 && speed < 0){
         endgame;
     }
 
@@ -434,7 +434,7 @@ void kbd(unsigned char key, int x, int y) {
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
     if (screen == game) {
-        if (key == 32) {
+        if (key == 32 && f1.getFuel() > 0) {
             f1.useFuel();
 
             speed = 60;
@@ -489,7 +489,7 @@ void kbdS(int key, int x, int y) {
 
                 //rock.rotate(15);
                 //rock.move(-20, 0);
-                if (f1.getFuel() == 0 && speed == 0){
+                if (f1.getFuel() == 0 && speed < 0){
                     screen = endgame;
                 }
                 if (rock.getCenter().x < 0) {
