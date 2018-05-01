@@ -5,9 +5,10 @@
 #include "fueltank.h"
 #include <iostream>
 
+using namespace std;
 
 fuelTank::fuelTank(){
-    fuel = 5;
+    fuel = 100;
 }
 
 int fuelTank::getFuel() {
@@ -22,4 +23,11 @@ void fuelTank::useFuel() {
     if (fuel > 0) {
         fuel--;
     }
+}
+
+bool fuelTank::hasFuel() {
+    if(fuel == 0){
+        return false;
+    }
+    return true;
 }

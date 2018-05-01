@@ -36,6 +36,7 @@ vector<Asteroid> asteroids;
 vector<Planet> planets;
 
 
+
 void init() {
     screen = start;
 
@@ -192,6 +193,7 @@ void displayStart() {
     for (char c: HighScore) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
+
 }
 
 /********** INFO ***************/
@@ -308,6 +310,18 @@ void displayGame() {
     for (char c: to_string(money)) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
+    string fuelTankBar = "Fuel: ";
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(20, 700);
+    for (char c: fuelTankBar) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(75, 700);
+    for (char c: to_string(f1.getFuel())) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
     //draw objects
     //myCircle.draw();
     rock.draw();
@@ -400,6 +414,60 @@ void kbd(unsigned char key, int x, int y) {
     if (screen == game) {
         if (key == 32) {
             f1.useFuel();
+
+            /* put in a temp boost method. Does the same as when up is pressed
+             */
+            rock.move(0, -20);
+            rock.setFuelTank(fuel--);
+            if (fuel == 0){
+                screen = endgame;
+            }
+            p2.move(0, 10);
+            score++;
+            glColor3f(1.0, 1.0, 0.0);
+            glRasterPos2i(365, 50);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, score);
+            if (rock.getCenter().y < height / 2 + 40) {
+                rock.setPoint(rock.getCenter().x, height / 2 + 40);
+            }
+            p1.move(0, 20);
+            for (int i = 0; i < coins.size(); i++) {
+                coins[i].move(0, 20);
+                if (coins[i].getCenter().y > height) {
+                    //stars is moving off the bottom of the screen, which is bad
+                    coins[i].setColor(1.0, 1.0, 0.0);
+                    coins[i].setPoint(rand() % (int) width, 0);
+                }
+            }
+            for (int i = 0; i < stars2.size(); i++) {
+                stars2[i].move(0, stars2[i].getRadius() * 2);
+                if (stars2[i].getCenter().y > height) {
+                    //stars is moving off the bottom of the screen, which is bad
+                    stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                }
+                if (stars2[i].getCenter().x > width) {
+                    //stars is moving off the bottom of the screen, which is bad
+                    stars2[i].setPoint(0, stars2[i].getCenter().y);
+                }
+            }
+            for (int i = 0; i < asteroids.size(); i++) {
+                asteroids[i].move(0, 40);
+                if (asteroids[i].getCenter().y > height) {
+                    asteroids[i].setColor(.8, .8, .8);
+                    asteroids[i].setPoint(rand() % (int) width, height * -2);
+                }
+            }
+            for (int i = 0; i < planets.size(); i++) {
+                planets[i].move(0, 10);
+                if (planets[i].getCenter().y > height) {
+                    planets[i].setColor(1.0, 0.0, 0.1);
+                    planets[i].setPoint(rand() % (int) width, height * -2);
+                }
+            }
+
+            /*88888888888888888888888888888888888888888888888888888888888888888888888888888888
+             * 88888888888888888888888888888888888888888888888888888888888888888888888888888888*/
+
         }
         switch (key) {
             case 'r':

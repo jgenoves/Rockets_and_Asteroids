@@ -293,6 +293,18 @@ void Asteroid::draw() const {
     glEnd();
 }
 
+/******************** Planet class ********************/
+
+//Planet::Planet(): Circle() {
+//
+//}
+
+/******************** Asteroid class ********************/
+
+//Asteroid::Asteroid() : Circle() {
+//
+//}
+
 /******************** Rect class ********************/
 
 void Rect::calculateArea() {
