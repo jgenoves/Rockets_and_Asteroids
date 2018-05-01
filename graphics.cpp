@@ -193,7 +193,6 @@ void displayStart() {
     for (char c: HighScore) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-
 }
 
 /********** INFO ***************/
@@ -251,9 +250,6 @@ void displayGame() {
             money += 10;
         }
     }
-
-    /* butt ***************************************
-     * ********************************************/
 
     // function to set fuel tank to full
 
@@ -813,7 +809,7 @@ int main(int argc, char **argv) {
     glutTimerFunc(0, timer, 0);
     glutTimerFunc(0, timer1, 0);
     glutTimerFunc(40, timer2, 0);
-    //  glutTimerFunc(0, timer1, 0);
+
 
     // Enter the event-processing loop
     glutMainLoop();
