@@ -54,6 +54,10 @@ void cursor(int x, int y);
 // Calls itself after a specified time
 void timer(int extra);
 
+void moveUp(double &s);
+
+void slowDown(double &s);
+
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
 
