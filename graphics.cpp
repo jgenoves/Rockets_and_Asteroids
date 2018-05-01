@@ -16,7 +16,7 @@
 using namespace std;
 
 enum mode {
-    info, start, game, endgame
+    info, start, game, pause, endgame
 };
 
 ofstream outFile("Scores.txt", ios::app);
@@ -257,10 +257,14 @@ void displayGame() {
     for (int i = 0; i < asteroids.size(); i++) {
         if (isOverlappingAstRock(asteroids[i], rock)) {
             if (rock.getHullStat() == notDamaged) {
-                //sethullStat(damaged);
+                rock.sethullStat(Damaged);
+                rock.setColor(0.5,0.5,0.5);
             } else if (rock.getHullStat() == Damaged) {
-                //sethullStat(veryDamaged);
-            } else {
+                rock.sethullStat(veryDamaged);
+                rock.setColor(0.2,0.2,0.2);
+            }
+            if (rock.getHullStat() == veryDamaged){
+                rock.sethullStat(Destroyed);
                 screen = endgame;
             }
         }
@@ -311,6 +315,28 @@ void displayGame() {
     //draw objects
     //myCircle.draw();
     rock.draw();
+}
+
+void displayPause(){
+    string message = "Pause Screen";
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(200, 300);
+    for (char c: message) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
+    string message1 = "Click to continue";
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(200, 330);
+    for (char c: message1) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    string message2 = "Press escape key to quit";
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(200, 360);
+    for (char c: message2) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
 }
 
 void displayEnd() {
@@ -368,6 +394,9 @@ void display() {
         case game:
             displayGame();
             break;
+        case pause:
+            displayPause();
+            break;
         case endgame:
             displayEnd();
             break;
@@ -397,19 +426,10 @@ void kbd(unsigned char key, int x, int y) {
     //Registers a space bar pressed
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
-    if (screen == game) {
-        if (key == 32) {
-            f1.useFuel();
-        }
-        switch (key) {
-            case 'r':
-                rock.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
-                break;
+    if (screen == game){
+        switch(key){
             case 'p':
-                rock.setColor(0.4, 0.0, 0.8);
-                break;
-            case 'w':
-                rock.setColor(1.0, 1.0, 1.0);
+                screen = pause;
         }
     }
     glutPostRedisplay();
@@ -599,6 +619,8 @@ void mouse(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == start) {
         screen = info;
     } else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == info) {
+        screen = game;
+    } else if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == pause) {
         screen = game;
     }
     glutPostRedisplay();
