@@ -320,11 +320,11 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
-    glColor3f(1.0, 1.0, 0.0);
-    glRasterPos2i(75, 700);
-    for (char c: to_string(f1.getFuel())) {
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
-    }
+//    glColor3f(1.0, 1.0, 0.0);
+//    glRasterPos2i(75, 700);
+//    for (char c: to_string(rock.getFuelTank())) {
+//        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+//    }
 
     string speedRead = "Speed: ";
     glColor3f(1.0, 1.0, 0.0);
