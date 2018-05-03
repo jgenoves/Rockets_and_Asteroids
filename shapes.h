@@ -207,8 +207,6 @@ public:
 class Rocket : public Shape {
 private:
 
-    hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
-    fuelTank fuel; // 100 is full fuel
     double hullHealth; //100 is full health
     double length;
     double height;
@@ -225,25 +223,17 @@ public:
 
 
     //getters
-    hullStatus getHullStat() const;
-    fuelTank getFuelTank() const;
-
+    double getHullHealth() const;
     double getHeight() const;
     double getWidth() const;
 
     // Setter
     // Note: this method will also recalculate area and perimeter
     void setDimensions(double l, double h);
+    void sethullHealth(double h);
 
-    /**
-     * R: amount to add to fuel tank
-     * M: FuelTank amount
-     * E: sets the fueltank to the object given
-     */
-    void setFuelTank(fuelTank &fueltank);
-
-    //setter for hullStat
-    void sethullStat(hullStatus h);
+    void damageHull();
+    void damageHullGraphics();
     void draw() const override;
 };
 
