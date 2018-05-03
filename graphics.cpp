@@ -26,6 +26,7 @@ int score = 0, money = 0;
 double speed = 0;
 int rad = 15;
 mode screen;
+Rect startRect;
 Rocket rock;
 Circle myCircle, c1, c2, c3, p1, p2;
 vector<Circle> stars;
@@ -46,6 +47,11 @@ void init() {
     rock.setDimensions(20.0, 40.0);
     rock.setColor(1.0, 1.0, 1.0);
     rock.setPoint((width / 2) - (int) rock.getWidth() / 2, (height - 10) - (int) rock.getHeight());
+
+    // init start button
+    startRect.setDimensions(240.0, 65.0);
+    startRect.setColor(1.0, 0.8, 0.0);
+    startRect.setPoint(230, 350);
 
     //Initialize Circle
     myCircle.setRadius(50.0);
@@ -166,7 +172,10 @@ void displayStart() {
     for (char c: message2) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-    string message1 = "Click anywhere to begin";
+
+    startRect.draw();
+
+    string message1 = "Click here to begin";
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2i(180, 350);
     for (char c: message1) {
@@ -306,7 +315,6 @@ void displayGame() {
     for (char c: message1) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
-
 
     glColor3f(1.0, 1.0, 0.0);
     glRasterPos2i(420, 50);
@@ -490,7 +498,7 @@ void kbd(unsigned char key, int x, int y) {
 
             std::cout << rock.getFuelTank().getFuel();
 
-            speed = 60;
+            speed = 10;
 
 
             /* put in a temp boost method. Does the same as when up is pressed
@@ -639,10 +647,13 @@ void kbd(unsigned char key, int x, int y) {
 
     void cursor(int x, int y) {
         //move circle with mouse
-        /* if (screen == game) {
-             myCircle.setPoint(x, y);
-         }
-         */
+        if (screen == start) {
+            if (isOverlapping({x, y}, startRect)) {
+                startRect.setColor(0.9, 0.6, 0.1);
+            } else {
+                startRect.setColor(1.0, 0.8, 0.0);
+            }
+        }
         glutPostRedisplay();
     }
 
