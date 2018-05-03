@@ -1,3 +1,4 @@
+
 //
 // Created by Thomas Stockham on 4/5/18.
 //
@@ -10,6 +11,8 @@
 #include <windows.h>
 #else
 #include <sys/time.h>
+#include "shapes.h"
+
 #endif
 
 #ifdef __APPLE__
@@ -18,6 +21,7 @@
 
 #else
 #include <GL/glut.h>
+#include "shapes.h"
 #endif
 
 // Program initialization NOT OpenGL/GLUT dependent,
@@ -56,4 +60,7 @@ void timer(int extra);
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
 
+void slowDown(double &s);
+
+void moveUp(double &s);
 #endif /* graphics_h */

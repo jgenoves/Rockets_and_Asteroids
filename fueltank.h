@@ -15,6 +15,7 @@ public:
 
 
     int getFuel();
+
     void setFuel(int f);
 
     void useFuel();

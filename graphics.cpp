@@ -28,7 +28,6 @@ int rad = 15;
 mode screen;
 Rocket rock;
 Circle myCircle, c1, c2, c3, p1, p2;
-fuelTank f1;
 vector<Circle> stars;
 vector<Circle> stars2;
 vector<Circle> coins;
@@ -234,7 +233,7 @@ void displayInfo() {
 
 /***************** GAME ****************/
 void displayGame() {
-    if(f1.getFuel() == 0 && speed < 0){
+    if(rock.getFuelTank().getFuel() == 0 && speed < 0){
         endgame;
     }
 
@@ -256,15 +255,17 @@ void displayGame() {
     for (int i = 0; i < planets.size(); i++) {
         if (isOverlappingPlanRock(planets[i], rock)) {
             planets[i].setColor(1.0, 0.02, 0.5);
-            rock.setFuelTankToFull();
+            rock.getFuelTank().setFuel(10);
         }
     }
 
     for (int i = 0; i < asteroids.size(); i++) {
         if (isOverlappingAstRock(asteroids[i], rock)) {
+
             if (rock.getHullStat() == notDamaged) {
                 rock.sethullStat(Damaged);
                 rock.setColor(0.5,0.5,0.5);
+                //isTouching = false;
             } else if (rock.getHullStat() == Damaged) {
                 rock.sethullStat(veryDamaged);
                 rock.setColor(0.2,0.2,0.2);
@@ -325,6 +326,12 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
+    glColor3f(1.0, 1.0, 0.0);
+    glRasterPos2i(70, 700);
+    for(char c: to_string(rock.getFuelTank().getFuel())){
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+
 //    glColor3f(1.0, 1.0, 0.0);
 //    glRasterPos2i(75, 700);
 //    for (char c: to_string(rock.getFuelTank())) {
@@ -342,8 +349,8 @@ void displayGame() {
   
     glColor3f(1.0, 1.0, 0.0);
     glRasterPos2i(425, 700);
-    //string s1 = to_string(speed);
-    for (char c: formatSpeed) {
+    string s1 = to_string(speed);
+    for (char c: s1) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
@@ -381,7 +388,7 @@ void displayEnd() {
     for (char c: message) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-    if (f1.getFuel() == 0){
+    if (rock.getFuelTank().getFuel() == 0){
         string messagef = "You ran out of fuel";
         glColor3f(1.0, 0.0, 0.0);
         glRasterPos2i(180, 350);
@@ -478,10 +485,13 @@ void kbd(unsigned char key, int x, int y) {
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
     if (screen == game) {
-        if (key == 32 && f1.getFuel() > 0) {
-            f1.useFuel();
+        if (key == 32 && rock.getFuelTank().getFuel() > 0) {
+            rock.getFuelTank().useFuel();
+
+            std::cout << rock.getFuelTank().getFuel();
 
             speed = 60;
+
 
             /* put in a temp boost method. Does the same as when up is pressed
              */
@@ -506,7 +516,7 @@ void kbd(unsigned char key, int x, int y) {
     return;
 
     }
-}
+
 
     void kbdS(int key, int x, int y) {
         GLUT_KEY_REPEAT_ON;
@@ -534,7 +544,7 @@ void kbd(unsigned char key, int x, int y) {
 
                     //rock.rotate(15);
                     //rock.move(-20, 0);
-                    if (f1.getFuel() == 0 && speed < 0) {
+                    if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
                         screen = endgame;
                     }
                     if (rock.getCenter().x < 0) {
@@ -577,7 +587,7 @@ void kbd(unsigned char key, int x, int y) {
                 case GLUT_KEY_RIGHT:
                     //rock.move(30,0);
                     //rock.rotate(15);
-                    if (f1.getFuel() == 0 && speed == 0) {
+                    if (rock.getFuelTank().getFuel() == 0 && speed == 0) {
                         screen = endgame;
                     }
                     if (rock.getCenter().x > width) {
@@ -721,7 +731,7 @@ void kbd(unsigned char key, int x, int y) {
     void moveUp(double &s) {
 
 
-        /* this bad boy is meant to work wuith the key 32 button press(space bar)
+        /* this bad boy is meant to work with the key 32 button press(space bar)
          * when space bar is pressed, speed (&s) is set to 20
          * this should make it "float" out like space
          */
@@ -731,7 +741,7 @@ void kbd(unsigned char key, int x, int y) {
 
         //s originally == 20
         rock.move(0, -s);
-        if (f1.getFuel() == 0 && speed < 0) {
+        if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
             screen = endgame;
         }
         p2.move(0, s / 2);

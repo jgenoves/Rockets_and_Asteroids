@@ -362,16 +362,11 @@ void Rect::draw() const {
 /*********** ROCKET CLASS **************/
 Rocket::Rocket() {
     sethullStat(notDamaged);
-    setFuelTankToFull();
+    fuelTank fuel;
     setDimensions(20,40);
 }
 
-Rocket::Rocket(hullStatus h, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
-    setDimensions(20,40);
-}
-Rocket :: Rocket(double h, double l, hullStatus hs, int health, int fuel) : hullStat(notDamaged), hullHealth(100), FuelTank(100){
-    setDimensions(l,h);
-}
+
 void Rocket::calculateArea() {
     area = length * height;
 }
@@ -379,18 +374,8 @@ void Rocket::calculatePerimeter() {
     perimeter = 2.0 * length + 2.0 * height;
 }
 
-void Rocket::setFuelTank(double fuelAmount) {
-    if(FuelTank + fuelAmount > 200){
-        FuelTank = 200;
-    }else if(FuelTank + fuelAmount < 0){
-        FuelTank = 0;
-    }else{
-        FuelTank += fuelAmount;
-    }
-}
-
-void Rocket::setFuelTankToFull() {
-    FuelTank = 100;
+void Rocket::setFuelTank(fuelTank &f) {
+    fuel = f;
 }
 
 void Rocket::sethullStat(hullStatus h) {
@@ -398,6 +383,10 @@ void Rocket::sethullStat(hullStatus h) {
 }
 hullStatus Rocket ::getHullStat() const {
     return hullStat;
+}
+
+fuelTank Rocket::getFuelTank() const {
+    return fuel;
 }
 
 double Rocket::getWidth() const {

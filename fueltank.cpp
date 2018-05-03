@@ -7,7 +7,7 @@
 
 
 fuelTank::fuelTank(){
-    fuel = 5;
+    fuel = 10;
 }
 
 int fuelTank::getFuel() {
@@ -20,6 +20,6 @@ void fuelTank::setFuel(int f) {
 
 void fuelTank::useFuel() {
     if (fuel > 0) {
-        fuel--;
+        --fuel;
     }
 }

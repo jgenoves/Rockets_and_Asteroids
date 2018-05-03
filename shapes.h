@@ -5,6 +5,8 @@
 #ifndef CS120A_SHAPES_SHAPES_H
 #define CS120A_SHAPES_SHAPES_H
 
+#include "fueltank.h"
+
 const double PI = 3.14159265358979;
 
 // colors in OpenGL are stored in three (r, g, b) values
@@ -206,7 +208,7 @@ class Rocket : public Shape {
 private:
 
     hullStatus hullStat; //Enum used to determine which graphics should represent the rocket. Based on hullHealth
-    double FuelTank; // 100 is full fuel
+    fuelTank fuel; // 100 is full fuel
     double hullHealth; //100 is full health
     double length;
     double height;
@@ -220,12 +222,11 @@ public:
     //shapes to the correct dimensions for the parts.
     //This also initializes the rocket fuel supply to full.
     Rocket();
-    Rocket(hullStatus h, int health, int fuel);
-    Rocket(double h, double l, hullStatus hs, int health, int fuel);
+
 
     //getters
     hullStatus getHullStat() const;
-    double getFuelTank() const;
+    fuelTank getFuelTank() const;
 
     double getHeight() const;
     double getWidth() const;
@@ -237,18 +238,9 @@ public:
     /**
      * R: amount to add to fuel tank
      * M: FuelTank amount
-     * E: adds fuelAmount to fuel tank. This is performed when
-     *      the rocket collects a fuel supply in the level.
-     *      Note: fuel supply cannot exceed 100 in valye
+     * E: sets the fueltank to the object given
      */
-    void setFuelTank(double fuelAmount);
-
-    /**
-     * R: nothing
-     * M: FuelTank amount
-     * E: this will set the FuelTank value to 100.
-     */
-    void setFuelTankToFull();
+    void setFuelTank(fuelTank &fueltank);
 
     //setter for hullStat
     void sethullStat(hullStatus h);
