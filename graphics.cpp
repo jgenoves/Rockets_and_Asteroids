@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+void slowDown(double &s, std::function<void(double &s)> moveDirection);
+void moveUp(double &s);
+
 using namespace std;
 
 enum mode {
@@ -246,7 +249,7 @@ void displayGame() {
         endgame;
     }
 
-    slowDown(speed);
+    slowDown(speed, moveUp);
 
     color c1 = {1.0, 1.0, 0.0};
     for (int i = 0; i < coins.size(); i++) {
@@ -442,13 +445,6 @@ void display() {
      */
 
 
-//    glBegin(GL_QUADS);
-//    glVertex2i(10, 10);
-//    glVertex2i(890, 10);
-//    glVertex2i(890, 490);
-//    glVertex2i(10, 490);
-//    glEnd();
-
     switch (screen) {
         case start:
             displayStart();
@@ -498,7 +494,7 @@ void kbd(unsigned char key, int x, int y) {
 
             std::cout << rock.getFuelTank().getFuel();
 
-            speed = 10;
+            speed = 5;
 
 
             /* put in a temp boost method. Does the same as when up is pressed
@@ -530,28 +526,7 @@ void kbd(unsigned char key, int x, int y) {
         GLUT_KEY_REPEAT_ON;
         if (screen == game) {
             switch (key) {
-                /* case GLUT_KEY_DOWN:
-                     rock.move(0, 30);
-                     if (rock.getCenter().y > height-20){
-                         rock.setPoint(rock.getCenter().x, height-20);
-                     }
-                     for (int i = 0;i<stars2.size();i++){
-                         stars2[i].move(0, stars2[i].getRadius());
-                         if (stars2[i].getCenter().y > height){
-                             //stars is moving off the bottom of the screen, which is bad
-                             stars2[i].setPoint(stars2[i].getCenter().x, 0);
-                         }
-                         if (stars2[i].getCenter().x > width){
-                             //stars is moving off the bottom of the screen, which is bad
-                             stars2[i].setPoint(0, stars2[i].getCenter().y);
-                         }
-                     }
-                     break;
-                     */
                 case GLUT_KEY_LEFT:
-
-                    //rock.rotate(15);
-                    //rock.move(-20, 0);
                     if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
                         screen = endgame;
                     }
@@ -635,10 +610,6 @@ void kbd(unsigned char key, int x, int y) {
                     }
                     p2.move(-10, 0);
                     break;
-
-                case GLUT_KEY_UP:
-
-                    break;
             }
         }
         glutPostRedisplay();
@@ -671,7 +642,7 @@ void kbd(unsigned char key, int x, int y) {
     }
 
     void timer(int extra) {
-//make the stars fall
+    //make the stars fall
 
         for (int i = 0; i < stars.size(); i++) {
             stars[i].move(0, stars[i].getRadius());
@@ -741,14 +712,10 @@ void kbd(unsigned char key, int x, int y) {
 //originally so imma leave it
     void moveUp(double &s) {
 
-
         /* this bad boy is meant to work with the key 32 button press(space bar)
          * when space bar is pressed, speed (&s) is set to 20
          * this should make it "float" out like space
          */
-
-
-
 
         //s originally == 20
         rock.move(0, -s);
@@ -803,28 +770,28 @@ void kbd(unsigned char key, int x, int y) {
 // parabolas weren't working out for me, made the game all wonky
 //this seems to give it a god look
 //This just makes the speed "exponentially" slow down
-    void slowDown(double &s) {
+    void slowDown(double &s, std::function<void(double &s)> moveDirection) {
 
         if (s > 40) {
-            moveUp(s);
+            moveDirection(s);
             s = s - 6;
         } else if (s > 30) {
-            moveUp(s);
+            moveDirection(s);
             s = s - 3;
         } else if (s > 25) {
-            moveUp(s);
+            moveDirection(s);
             s = s - 1;
         } else if (s > 20) {
-            moveUp(s);
+            moveDirection(s);
             s = s - .5;
         } else if (s > 15) {
-            moveUp(s);
+            moveDirection(s);
             s = s - .25;
         } else if (s > 10) {
-            moveUp(s);
+            moveDirection(s);
             s = s - .125;
         } else if (s > 0) {
-            moveUp(s);
+            moveDirection(s);
             s = s - .0425;
         }
 
