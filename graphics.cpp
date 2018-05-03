@@ -53,6 +53,7 @@ void init() {
     rock.setDimensions(20.0, 40.0);
     rock.setColor(1.0, 1.0, 1.0);
     rock.setPoint((width / 2) - (int) rock.getWidth() / 2, (height - 10) - (int) rock.getHeight());
+    speed = 0;
 
 
 
@@ -68,7 +69,7 @@ void init() {
     srand(time(NULL));
     rad = 15;
     for (int i = 0; i < 3; i++) {
-        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
+        coins.push_back(Circle(15, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
     }
 
     // Initialize asteroids
@@ -220,10 +221,7 @@ void displayGame() {
     color c1 = {1.0, 1.0, 0.0};
     for (int i = 0; i < coins.size(); i++) {
         if (isOverlappingCirRock(coins[i], rock)) {
-            //if (coins[i].getFill() == c1){
-            //  money +=10;
-            //}
-            coins[i].setColor(0.02, 0.02, 0.17);
+            coins.erase(coins.begin()+i);
             money += 10;
         }
     }
@@ -233,6 +231,7 @@ void displayGame() {
     for (int i = 0; i < planets.size(); i++) {
         if (isOverlappingPlanRock(planets[i], rock)) {
             planets[i].setColor(1.0, 0.02, 0.5);
+            tank.setFuel(100);
         }
     }
 
@@ -314,8 +313,6 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
-    //draw objects
-    //myCircle.draw();
     rock.draw();
 
     for (int i = 0; i < asteroids.size(); i++) {
@@ -462,7 +459,7 @@ void kbd(unsigned char key, int x, int y) {
 
             std::cout << tank.getFuel();
 
-            speed = 5;
+            speed = 15;
 
 
             /* put in a temp boost method. Does the same as when up is pressed
@@ -483,6 +480,28 @@ void kbd(unsigned char key, int x, int y) {
         }
 
     }
+
+    if(screen == endgame){
+        for(int i = 0; i < coins.size(); ++i){
+            coins.erase(coins.begin()+i);
+        }
+        for(int i = 0; i < asteroids.size(); ++i){
+            asteroids.erase(asteroids.begin()+i);
+        }
+        for(int i = 0; i < planets.size(); ++i){
+            planets.erase(planets.begin()+i);
+        }
+
+        switch (key) {
+            case 'r':
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                init();
+
+                break;
+        }
+    }
+
 
     glutPostRedisplay();
     return;
@@ -632,7 +651,7 @@ void kbd(unsigned char key, int x, int y) {
     }
 
     void timer(int extra) {
-//make the stars fall
+        //make the stars fall
 
         for (int i = 0; i < stars.size(); i++) {
             stars[i].move(0, stars[i].getRadius());
@@ -657,7 +676,7 @@ void kbd(unsigned char key, int x, int y) {
             for (int i = 0; i < coins.size(); i++) {
                 coins[i].setRadius(rad);
             }
-            if (rad == 1) {
+            if (rad <= 1) {
                 glutPostRedisplay();
                 glutTimerFunc(40, timer1, 1);
             } else {
@@ -669,7 +688,7 @@ void kbd(unsigned char key, int x, int y) {
             for (int i = 0; i < coins.size(); i++) {
                 coins[i].setRadius(rad);
             }
-            if (rad == 15) {
+            if (rad >= 15) {
                 glutPostRedisplay();
                 glutTimerFunc(40, timer1, 0);
             } else {
@@ -678,12 +697,8 @@ void kbd(unsigned char key, int x, int y) {
             }
 
         }
+
     }
-//    glutPostRedisplay();
-        //glutTimerFunc waits for 40 milliseconds before it calls itself.
-//    if (screen == game) {
-//        glutTimerFunc(40, timer1, extra);
-//    }
 
 
     void timer2(int extra) {
@@ -791,6 +806,7 @@ void slowDown(double &s, std::function<void(double &s)> moveDirection) {
 
 
 }
+
 
 /* Main function: GLUT runs as a console application starting at main()  */
     int main(int argc, char **argv) {

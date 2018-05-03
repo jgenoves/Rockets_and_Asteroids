@@ -7,7 +7,7 @@
 
 
 fuelTank::fuelTank(){
-    fuel = 5;
+    fuel = 100;
 }
 
 int fuelTank::getFuel() {
