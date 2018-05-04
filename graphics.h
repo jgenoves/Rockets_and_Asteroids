@@ -63,4 +63,13 @@ void mouse(int button, int state, int x, int y);
 void slowDown(double &s);
 
 void moveUp(double &s);
+
+void moveLeft(double &lt);
+
+void leftSlowDown(double &lt);
+
+void moveRight(double &rt);
+
+void rightSlowDown(double &rt);
+
 #endif /* graphics_h */
