@@ -12,6 +12,7 @@
 #include "shapes.h"
 #include <string>
 #include <vector>
+#include <functional>
 
 using namespace std;
 
@@ -23,16 +24,22 @@ ofstream outFile("Scores.txt", ios::app);
 GLdouble width, height;
 int wd, highScore, maxi;
 int score = 0, money = 0;
-double speed = 0, leftThrust = 0, rightThrust = 0;
+double speed = 0;
 int rad = 15;
 mode screen;
+fuelTank tank;
 Rocket rock;
-Circle myCircle, c1, c2, c3, p1, p2;
+Circle p1, p2;
 vector<Circle> stars;
 vector<Circle> stars2;
 vector<Circle> coins;
 vector<Asteroid> asteroids;
 vector<Planet> planets;
+bool isDestroyed = false;
+bool outOfFuel = false;
+
+void slowDown(double &s, std::function<void(double &s)> moveDirection);
+void moveUp(double &s);
 
 
 
@@ -42,27 +49,11 @@ void init() {
     width = 500;
     height = 720;
 
-    //initialize rectangle
+    //initialize rocket
     rock.setDimensions(20.0, 40.0);
     rock.setColor(1.0, 1.0, 1.0);
     rock.setPoint((width / 2) - (int) rock.getWidth() / 2, (height - 10) - (int) rock.getHeight());
-
-    //Initialize Circle
-    myCircle.setRadius(50.0);
-    myCircle.setColor(0.556863, 0.137255, 0.137255);
-    myCircle.setPoint(350, 200);
-
-    c1.setRadius(10.0);
-    c1.setColor(1.0, 1.0, 0.0);
-    c1.setPoint(350, 200);
-
-    p1.setRadius(700);
-    p1.setColor(0.329412, 0.329412, 0.329412);
-    p1.setPoint(250, 1390);
-
-    p2.setRadius(150);
-    p2.setColor(0.9, 0.2, 0.2);
-    p2.setPoint(450, -100);
+    speed = 0;
 
 
 
@@ -78,15 +69,11 @@ void init() {
     srand(time(NULL));
     rad = 15;
     for (int i = 0; i < 3; i++) {
-        coins.push_back(Circle(rad, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
+        coins.push_back(Circle(15, rand() % (int) width, rand() % int(height), 1.0, 1.0, 0.0));
     }
 
     // Initialize asteroids
     srand(time(NULL));
-
-    asteroids.clear();
-    //i dont know what this does, but lisa says we should do it
-    //so lets keep er in there
 
     for (int i = 0; i < 3; i++) {
         asteroids.push_back(Asteroid(30, rand() % (int) width, rand() % int(height) * -6, 0.8, 0.8, 0.8));
@@ -94,8 +81,6 @@ void init() {
     // Initialize Planets
     srand(time(NULL));
 
-
-    planets.clear();
     for (int i = 0; i < 2; i++) {
         planets.push_back(Planet(50, rand() % (int) width, rand() % int(height) * -2, 1.0, 0.0, 0.0));
     }
@@ -158,6 +143,8 @@ bool isOverlappingPlanRock(const Planet &p, const Rocket &r) {
 bool isOverlappingAstRock(const Asteroid &a, const Rocket &r) {
     return ((a.getRadius() + r.getWidth() / 2.0) > distance({r.getCenter().x, a.getCenter().y}, r.getCenter()) &&
             (a.getRadius() + r.getHeight() / 2.0) > distance({r.getCenter().x, a.getCenter().y}, a.getCenter()));
+
+
 }
 
 
@@ -182,20 +169,6 @@ void displayStart() {
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2i(180, 400);
     for (char c: message3) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
-    }
-    ifstream inFile("scores.txt");
-    inFile >> highScore;
-    maxi = highScore;
-    while (!inFile.eof()) {
-        inFile >> highScore;
-        if (highScore > maxi)
-            maxi = highScore;
-    }
-    string HighScore = to_string(maxi);
-    glColor3f(1.0, 0.1, 0.1);
-    glRasterPos2i(290, 400);
-    for (char c: HighScore) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 }
@@ -239,22 +212,16 @@ void displayInfo() {
 
 /***************** GAME ****************/
 void displayGame() {
-    if(rock.getFuelTank().getFuel() == 0 && speed < 0){
+    if(speed < 0){
         endgame;
     }
 
-    slowDown(speed);
-    leftSlowDown(leftThrust);
-    rightSlowDown(rightThrust);
-
+    slowDown(speed, moveUp);
 
     color c1 = {1.0, 1.0, 0.0};
     for (int i = 0; i < coins.size(); i++) {
         if (isOverlappingCirRock(coins[i], rock)) {
-            //if (coins[i].getFill() == c1){
-            //  money +=10;
-            //}
-            coins[i].setColor(0.02, 0.02, 0.17);
+            coins.erase(coins.begin()+i);
             money += 10;
         }
     }
@@ -264,27 +231,14 @@ void displayGame() {
     for (int i = 0; i < planets.size(); i++) {
         if (isOverlappingPlanRock(planets[i], rock)) {
             planets[i].setColor(1.0, 0.02, 0.5);
-            rock.getFuelTank().setFuel(10);
+            tank.setFuel(100);
         }
     }
 
-    for (int i = 0; i < asteroids.size(); i++) {
-        if (isOverlappingAstRock(asteroids[i], rock)) {
 
-            if (rock.getHullStat() == notDamaged) {
-                rock.sethullStat(Damaged);
-                rock.setColor(0.5,0.5,0.5);
-                //isTouching = false;
-            } else if (rock.getHullStat() == Damaged) {
-                rock.sethullStat(veryDamaged);
-                rock.setColor(0.2,0.2,0.2);
-            }
-            if (rock.getHullStat() == veryDamaged){
-                rock.sethullStat(Destroyed);
-                screen = endgame;
-            }
-        }
-    }
+
+
+
 
 
     for (int i = 0; i < stars2.size(); i++) {
@@ -335,17 +289,13 @@ void displayGame() {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
+
+
     glColor3f(1.0, 1.0, 0.0);
-    glRasterPos2i(70, 700);
-    for(char c: to_string(rock.getFuelTank().getFuel())){
+    glRasterPos2i(75, 700);
+    for (char c: to_string(tank.getFuel())) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
-
-//    glColor3f(1.0, 1.0, 0.0);
-//    glRasterPos2i(75, 700);
-//    for (char c: to_string(rock.getFuelTank())) {
-//        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
-//    }
 
     string speedRead = "Speed: ";
     glColor3f(1.0, 1.0, 0.0);
@@ -356,22 +306,26 @@ void displayGame() {
 
 
 
-    string formatSpeed;
-    stringstream ss;
-    ss << setprecision(3) << speed;
-    ss >> formatSpeed;
-    //This (above) just creates a var version of s
-    // That is formatted so it doesnt print out inf decimals.
     glColor3f(1.0, 1.0, 0.0);
     glRasterPos2i(425, 700);
-    string s1 = formatSpeed;
+    string s1 = to_string(speed);
     for (char c: s1) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
 
-    //draw objects
-    //myCircle.draw();
     rock.draw();
+
+    for (int i = 0; i < asteroids.size(); i++) {
+        if(isOverlappingAstRock(asteroids[i], rock)){
+            isDestroyed = true;
+            screen = endgame;
+        }
+    }
+
+    if(tank.getFuel() == 0){
+        outOfFuel = true;
+        screen = endgame;
+    }
 }
 
 void displayPause(){
@@ -403,7 +357,7 @@ void displayEnd() {
     for (char c: message) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
-    if (rock.getFuelTank().getFuel() == 0){
+      if (outOfFuel){
         string messagef = "You ran out of fuel";
         glColor3f(1.0, 0.0, 0.0);
         glRasterPos2i(180, 350);
@@ -411,7 +365,7 @@ void displayEnd() {
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
         }
     }
-    if (rock.getHullStat() == Destroyed){
+    if (isDestroyed){
         string messagea = "You ran into an asteroid!";
         glColor3f(1.0, 0.0, 0.0);
         glRasterPos2i(180, 350);
@@ -500,15 +454,18 @@ void kbd(unsigned char key, int x, int y) {
     //used for boost, each press reduces remaining fuel (out of 5) by 1.
 
     if (screen == game) {
-        if (key == 32 && rock.getFuelTank().getFuel() > 0) {
-            //rock.getFuelTank().useFuel();
-            rock.rockUseFuel();
+        if (key == 32 && tank.getFuel() > 0) {
+            tank.useFuel();
 
-            std::cout << rock.getFuelTank().getFuel();
+            std::cout << tank.getFuel();
 
-            speed = 60;
+            speed = 15;
 
 
+            /* put in a temp boost method. Does the same as when up is pressed
+             */
+            //do a --speed gluttimerfunc to make slow down
+            //moveUp(speed);
 
             /*88888888888888888888888888888888888888888888888888888888888888888888888888888888
              * 88888888888888888888888888888888888888888888888888888888888888888888888888888888*/
@@ -516,23 +473,35 @@ void kbd(unsigned char key, int x, int y) {
         }
         switch (key) {
             case 'r':
-               // rock.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
-                screen = start;
+                rock.setColor(1.0, 0.0, 0.0); // this won't work yet without global variables
                 break;
             case 'p':
                 screen = pause;
-                break;
         }
 
     }
 
-    if(screen == endgame) {
+    if(screen == endgame){
+        for(int i = 0; i < coins.size(); ++i){
+            coins.erase(coins.begin()+i);
+        }
+        for(int i = 0; i < asteroids.size(); ++i){
+            asteroids.erase(asteroids.begin()+i);
+        }
+        for(int i = 0; i < planets.size(); ++i){
+            planets.erase(planets.begin()+i);
+        }
+
         switch (key) {
             case 'r':
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 init();
+
                 break;
         }
     }
+
 
     glutPostRedisplay();
     return;
@@ -566,13 +535,88 @@ void kbd(unsigned char key, int x, int y) {
 
                     //rock.rotate(15);
                     //rock.move(-20, 0);
-                    leftThrust = 25;
-
+//                    if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
+//                        screen = endgame;
+//                    }
+                    if (rock.getCenter().x < 0) {
+                        rock.setPoint(width + rock.getWidth() / 2, rock.getCenter().y);
+                    }
+                    for (int i = 0; i < stars2.size(); i++) {
+                        stars2[i].move(stars2[i].getRadius() * 2, 0);
+                        if (stars2[i].getCenter().y > height) {
+                            //stars is moving off the bottom of the screen, which is bad
+                            stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                        }
+                        if (stars2[i].getCenter().x > width) {
+                            //stars is moving off the bottom of the screen, which is bad
+                            stars2[i].setPoint(0, stars2[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < coins.size(); i++) {
+                        coins[i].move(20, 0);
+                        if (coins[i].getCenter().x > width) {
+                            coins[i].setColor(1.0, 1.0, 0.0);
+                            coins[i].setPoint(0, coins[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < asteroids.size(); i++) {
+                        asteroids[i].move(20, 0);
+                        if (asteroids[i].getCenter().x > width) {
+                            asteroids[i].setColor(.8, .8, .8);
+                            asteroids[i].setPoint(0, asteroids[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < planets.size(); i++) {
+                        planets[i].move(10, 0);
+                        if (planets[i].getCenter().x > width) {
+                            planets[i].setColor(1.0, 0.0, 0.1);
+                            planets[i].setPoint(0, planets[i].getCenter().y);
+                        }
+                    }
+                    p2.move(10, 0);
                     break;
                 case GLUT_KEY_RIGHT:
                     //rock.move(30,0);
                     //rock.rotate(15);
-                   rightThrust = 25;
+//                    if (rock.getFuelTank().getFuel() == 0 && speed == 0) {
+//                        screen = endgame;
+//                    }
+                    if (rock.getCenter().x > width) {
+                        rock.setPoint(0, rock.getCenter().y);
+                    }
+                    for (int i = 0; i < stars2.size(); i++) {
+                        stars2[i].move(-(stars2[i].getRadius()) * 2, 0);
+                        if (stars2[i].getCenter().y > height) {
+                            //stars is moving off the bottom of the screen, which is bad
+                            stars2[i].setPoint(stars2[i].getCenter().x, 0);
+                        }
+                        if (stars2[i].getCenter().x < 0) {
+                            //stars is moving off the bottom of the screen, which is bad
+                            stars2[i].setPoint(width, stars2[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < coins.size(); i++) {
+                        coins[i].move(-20, 0);
+                        if (coins[i].getCenter().x < 0) {
+                            coins[i].setColor(1.0, 1.0, 0.0);
+                            coins[i].setPoint(width, coins[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < asteroids.size(); i++) {
+                        asteroids[i].move(-20, 0);
+                        if (asteroids[i].getCenter().x < 0) {
+                            asteroids[i].setColor(.8, .8, .8);
+                            asteroids[i].setPoint(width, asteroids[i].getCenter().y);
+                        }
+                    }
+                    for (int i = 0; i < planets.size(); i++) {
+                        planets[i].move(-10, 0);
+                        if (planets[i].getCenter().x < 0) {
+                            planets[i].setColor(1.0, 0.0, 0.1);
+                            planets[i].setPoint(width, planets[i].getCenter().y);
+                        }
+                    }
+                    p2.move(-10, 0);
                     break;
 
                 case GLUT_KEY_UP:
@@ -607,7 +651,7 @@ void kbd(unsigned char key, int x, int y) {
     }
 
     void timer(int extra) {
-//make the stars fall
+        //make the stars fall
 
         for (int i = 0; i < stars.size(); i++) {
             stars[i].move(0, stars[i].getRadius());
@@ -632,7 +676,7 @@ void kbd(unsigned char key, int x, int y) {
             for (int i = 0; i < coins.size(); i++) {
                 coins[i].setRadius(rad);
             }
-            if (rad == 1) {
+            if (rad <= 1) {
                 glutPostRedisplay();
                 glutTimerFunc(40, timer1, 1);
             } else {
@@ -644,7 +688,7 @@ void kbd(unsigned char key, int x, int y) {
             for (int i = 0; i < coins.size(); i++) {
                 coins[i].setRadius(rad);
             }
-            if (rad == 15) {
+            if (rad >= 15) {
                 glutPostRedisplay();
                 glutTimerFunc(40, timer1, 0);
             } else {
@@ -653,12 +697,8 @@ void kbd(unsigned char key, int x, int y) {
             }
 
         }
+
     }
-//    glutPostRedisplay();
-        //glutTimerFunc waits for 40 milliseconds before it calls itself.
-//    if (screen == game) {
-//        glutTimerFunc(40, timer1, extra);
-//    }
 
 
     void timer2(int extra) {
@@ -688,9 +728,9 @@ void kbd(unsigned char key, int x, int y) {
 
         //s originally == 20
         rock.move(0, -s);
-        if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
-            screen = endgame;
-        }
+//        if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
+//            screen = endgame;
+//        }
         p2.move(0, s / 2);
         score++;
         glColor3f(1.0, 1.0, 0.0);
@@ -739,146 +779,34 @@ void kbd(unsigned char key, int x, int y) {
 // parabolas weren't working out for me, made the game all wonky
 //this seems to give it a god look
 //This just makes the speed "exponentially" slow down
-    void slowDown(double &s) {
+void slowDown(double &s, std::function<void(double &s)> moveDirection) {
 
-        if (s > 40) {
-            moveUp(s);
-            s = s - 6;
-        } else if (s > 30) {
-            moveUp(s);
-            s = s - 3;
-        } else if (s > 25) {
-            moveUp(s);
-            s = s - 1;
-        } else if (s > 20) {
-            moveUp(s);
-            s = s - .5;
-        } else if (s > 15) {
-            moveUp(s);
-            s = s - .25;
-        } else if (s > 10) {
-            moveUp(s);
-            s = s - .125;
-        } else if (s > 0) {
-            moveUp(s);
-            s = s - .0425;
-        }
-
-
-    }
-
-void moveLeft(double &t){
-    if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
-        screen = endgame;
-    }
-
-    if (rock.getCenter().x < 0) {
-        rock.setPoint((width + rock.getWidth() / 2), rock.getCenter().y);
+    if (s > 40) {
+        moveDirection(s);
+        s = s - 6;
+    } else if (s > 30) {
+        moveDirection(s);
+        s = s - 3;
+    } else if (s > 25) {
+        moveDirection(s);
+        s = s - 1;
+    } else if (s > 20) {
+        moveDirection(s);
+        s = s - .5;
+    } else if (s > 15) {
+        moveDirection(s);
+        s = s - .25;
+    } else if (s > 10) {
+        moveDirection(s);
+        s = s - .125;
+    } else if (s > 0) {
+        moveDirection(s);
+        s = s - .0425;
     }
 
 
-    for (int i = 0; i < stars2.size(); i++) {
-        stars2[i].move(stars2[i].getRadius() * 2, 0);
-        if (stars2[i].getCenter().y > height) {
-            //stars is moving off the bottom of the screen, which is bad
-            stars2[i].setPoint(stars2[i].getCenter().x, 0);
-        }
-        if (stars2[i].getCenter().x > width) {
-            //stars is moving off the bottom of the screen, which is bad
-            stars2[i].setPoint(0, stars2[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < coins.size(); i++) {
-        coins[i].move(t*2, 0);
-        if (coins[i].getCenter().x > width) {
-            coins[i].setColor(1.0, 1.0, 0.0);
-            coins[i].setPoint(0, coins[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < asteroids.size(); i++) {
-        asteroids[i].move(t*2, 0);
-        if (asteroids[i].getCenter().x > width) {
-            asteroids[i].setColor(.8, .8, .8);
-            asteroids[i].setPoint(0, asteroids[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < planets.size(); i++) {
-        planets[i].move(t, 0);
-        if (planets[i].getCenter().x > width) {
-            planets[i].setColor(1.0, 0.0, 0.1);
-            planets[i].setPoint(0, planets[i].getCenter().y);
-        }
-    }
-    p2.move(t, 0);
 }
 
-void leftSlowDown(double &lt){
-    if(leftThrust > 15){
-        moveLeft(lt);
-        leftThrust = leftThrust - 5;
-    }else if(leftThrust > 5){
-        moveLeft(lt);
-        leftThrust = leftThrust - 3;
-    }else if(leftThrust > 0){
-        moveLeft(lt);
-        leftThrust = leftThrust - .5;
-    }
-}
-
-void moveRight(double &rt){
-    if (rock.getFuelTank().getFuel() == 0 && speed == 0) {
-        screen = endgame;
-    }
-    if (rock.getCenter().x > width) {
-        rock.setPoint(0, rock.getCenter().y);
-    }
-    for (int i = 0; i < stars2.size(); i++) {
-        stars2[i].move(-(stars2[i].getRadius()) * 2, 0);
-        if (stars2[i].getCenter().y > height) {
-            //stars is moving off the bottom of the screen, which is bad
-            stars2[i].setPoint(stars2[i].getCenter().x, 0);
-        }
-        if (stars2[i].getCenter().x < 0) {
-            //stars is moving off the bottom of the screen, which is bad
-            stars2[i].setPoint(width, stars2[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < coins.size(); i++) {
-        coins[i].move(-2*rt, 0);
-        if (coins[i].getCenter().x < 0) {
-            coins[i].setColor(1.0, 1.0, 0.0);
-            coins[i].setPoint(width, coins[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < asteroids.size(); i++) {
-        asteroids[i].move(-2*rt, 0);
-        if (asteroids[i].getCenter().x < 0) {
-            asteroids[i].setColor(.8, .8, .8);
-            asteroids[i].setPoint(width, asteroids[i].getCenter().y);
-        }
-    }
-    for (int i = 0; i < planets.size(); i++) {
-        planets[i].move(-rt, 0);
-        if (planets[i].getCenter().x < 0) {
-            planets[i].setColor(1.0, 0.0, 0.1);
-            planets[i].setPoint(width, planets[i].getCenter().y);
-        }
-    }
-    p2.move(-rt, 0);
-}
-
-void rightSlowDown(double &rt){
-    if(rightThrust > 15){
-        moveRight(rt);
-        rightThrust = rightThrust - 5;
-    }else if(rightThrust > 5){
-        moveRight(rt);
-        rightThrust = rightThrust - 3;
-    }else if(rightThrust > 0){
-        moveRight(rt);
-        rightThrust = rightThrust - .5;
-    }
-}
 
 /* Main function: GLUT runs as a console application starting at main()  */
     int main(int argc, char **argv) {
