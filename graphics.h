@@ -21,6 +21,7 @@
 
 #else
 #include <GL/glut.h>
+#include <functional>
 #include "shapes.h"
 #endif
 
@@ -64,12 +65,12 @@ void slowDown(double &s);
 
 void moveUp(double &s);
 
-void moveLeft(double &lt);
+void thrustLeft(double &lt);
 
-void leftSlowDown(double &lt);
 
-void moveRight(double &rt);
+void thrustRight(double &rt);
 
-void rightSlowDown(double &rt);
+void thrustSlowDown(double &s,  std::function<void(double &s)> moveDirection);
+
 
 #endif /* graphics_h */
