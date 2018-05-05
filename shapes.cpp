@@ -358,6 +358,8 @@ void Rect::draw() const {
 
 /*********** ROCKET CLASS **************/
 Rocket::Rocket() {
+    sethullStat(notDamaged);
+    setFuelTank(fuelTank1);
     setDimensions(20,40);
 }
 
@@ -367,6 +369,27 @@ void Rocket::calculateArea() {
 }
 void Rocket::calculatePerimeter() {
     perimeter = 2.0 * length + 2.0 * height;
+}
+
+void Rocket::setFuelTank(fuelTank f) {
+    fuelTank1 = f;
+}
+
+void Rocket::sethullStat(hullStatus h) {
+    hullStat = h;
+}
+hullStatus Rocket ::getHullStat() const {
+    return hullStat;
+}
+
+fuelTank Rocket::getFuelTank() const {
+    return fuelTank1;
+}
+
+void Rocket::rockUseFuel(){
+    if(getFuelTank().getFuel() > 0){
+        getFuelTank().setFuel(getFuelTank().getFuel() - 1);
+    }
 }
 
 double Rocket::getWidth() const {
@@ -386,10 +409,9 @@ void Rocket::setDimensions(double l, double h) {
     calculatePerimeter();
 }
 
-
 void Rocket::draw() const{
 
-
+    if(hullStat == notDamaged) {
         glColor3f(fill.red, fill.green, fill.blue);
         glBegin(GL_QUADS);
         //top left
@@ -429,10 +451,6 @@ void Rocket::draw() const{
         glEnd();
 
         //TODO: Draw rest of rocket relative to coordinates of the baseRect
-
+    }
 }
-
-
-
-
 
