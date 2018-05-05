@@ -110,8 +110,6 @@ public:
 class Asteroid : public Shape {
 protected:
     double radius;
-
-    void damageHull();
     void calculateArea() override;
     void calculatePerimeter() override;
 public:
@@ -207,7 +205,6 @@ public:
 class Rocket : public Shape {
 private:
 
-    double hullHealth; //100 is full health
     double length;
     double height;
     void calculateArea() override;
@@ -223,17 +220,15 @@ public:
 
 
     //getters
-    double getHullHealth() const;
+
     double getHeight() const;
     double getWidth() const;
 
     // Setter
     // Note: this method will also recalculate area and perimeter
     void setDimensions(double l, double h);
-    void sethullHealth(double h);
 
-    void damageHull();
-    void damageHullGraphics();
+
     void draw() const override;
 };
 

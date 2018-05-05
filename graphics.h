@@ -21,10 +21,11 @@
 
 #else
 #include <GL/glut.h>
+#include <functional>
 #include "shapes.h"
 #endif
 
-// Program initialization NOT OpenGL/GLUT dependent,
+// Program initialization NM:OT OpenGL/GLUT dependent,
 // as we haven't created a GLUT window yet
 void init(void);
 
@@ -60,7 +61,5 @@ void timer(int extra);
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
 
-void slowDown(double &s);
 
-void moveUp(double &s);
 #endif /* graphics_h */

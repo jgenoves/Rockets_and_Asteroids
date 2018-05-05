@@ -14,6 +14,20 @@
 #include <vector>
 #include <functional>
 
+/*
+ * R: douoble speed, and a function to the move the rocket in a direction
+ * M: Rocket's speed
+ * E: Gradually decreases speed.
+ */
+void slowDown(double &s, std::function<void(double &s)> moveDirection);
+
+/*
+ * R: double speed
+ * M: Rocket's position on screen
+ * E: Will move the rocket to the center of the screen, to make it look like its floating in space
+ */
+void moveUp(double &s);
+
 using namespace std;
 
 enum mode {
@@ -37,9 +51,6 @@ vector<Asteroid> asteroids;
 vector<Planet> planets;
 bool isDestroyed = false;
 bool outOfFuel = false;
-
-void slowDown(double &s, std::function<void(double &s)> moveDirection);
-void moveUp(double &s);
 
 
 
@@ -75,7 +86,7 @@ void init() {
     // Initialize asteroids
     srand(time(NULL));
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         asteroids.push_back(Asteroid(30, rand() % (int) width, rand() % int(height) * -6, 0.8, 0.8, 0.8));
     }
     // Initialize Planets
@@ -190,13 +201,13 @@ void displayInfo() {
     for (char c: messageI2) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
     }
-    string messageI3 = "Avoid asteroids, and collect coins for power-ups";
+    string messageI3 = "Avoid asteroids, and collect coins to earn money";
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2i(80, 380);
     for (char c: messageI3) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
     }
-    string messageI4 = "Use Planets and fuel tanks to fuel up!";
+    string messageI4 = "Fly over planets to fuel up!";
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2i(80, 400);
     for (char c: messageI4) {
@@ -459,7 +470,7 @@ void kbd(unsigned char key, int x, int y) {
 
             std::cout << tank.getFuel();
 
-            speed = 15;
+            speed = 9;
 
 
             /* put in a temp boost method. Does the same as when up is pressed
@@ -482,6 +493,13 @@ void kbd(unsigned char key, int x, int y) {
     }
 
     if(screen == endgame){
+
+        for(int i = 0; i < stars.size(); ++i){
+            stars.erase(stars.begin()+i);
+        }
+        for(int i = 0; i < stars2.size(); ++i){
+            stars2.erase(stars2.begin()+i);
+        }
         for(int i = 0; i < coins.size(); ++i){
             coins.erase(coins.begin()+i);
         }
@@ -711,19 +729,8 @@ void kbd(unsigned char key, int x, int y) {
         glutTimerFunc(40, timer2, 0);
     }
 
-//took the code that used to be all typed out to make the
-//ship mvoe up, made it a func
-//Not gonna lie I don't really know how it works and it wasn't commented in
-//originally so imma leave it
+
     void moveUp(double &s) {
-
-
-        /* this bad boy is meant to work with the key 32 button press(space bar)
-         * when space bar is pressed, speed (&s) is set to 20
-         * this should make it "float" out like space
-         */
-
-
 
 
         //s originally == 20

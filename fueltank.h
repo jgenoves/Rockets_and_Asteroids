@@ -18,6 +18,11 @@ public:
 
     void setFuel(int f);
 
+    /*
+     * R: Nothing
+     * M: int fuel
+     * E: Decreases the amount of fuel by 5
+     */
     void useFuel();
 };
 
