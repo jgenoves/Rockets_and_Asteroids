@@ -61,5 +61,6 @@ void timer(int extra);
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
 
-
+void thrustRight(double &rt);
+void thrustLeft(double &lt);
 #endif /* graphics_h */

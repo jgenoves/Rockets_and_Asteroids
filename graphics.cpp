@@ -36,7 +36,7 @@ enum mode {
 
 ofstream outFile("Scores.txt", ios::app);
 GLdouble width, height;
-int wd, highScore, maxi;
+int wd, maxi;
 int score = 0, money = 0;
 double speed = 0, rightThrust = 0, leftThrust = 0;
 int rad = 15;
@@ -95,6 +95,8 @@ void init() {
     for (int i = 0; i < 2; i++) {
         planets.push_back(Planet(50, rand() % (int) width, rand() % int(height) * -2, 1.0, 0.0, 0.0));
     }
+
+    tank.setFuel(100);
 }
 
 /* Initialize OpenGL Graphics */
@@ -182,6 +184,38 @@ void displayStart() {
     for (char c: message3) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
+
+    bool endOfLine = false;
+    bool endOfFile = false;
+    maxi = 0;
+    ifstream inFile;
+    inFile.open("scores.txt");
+    if(inFile) {
+        while (!endOfFile) {
+            while (!endOfLine) {
+                int highscore = 0;
+
+                inFile >> highscore;
+
+                if (highscore > maxi) {
+                    maxi = highscore;
+                }
+
+                endOfLine = inFile.peek() == EOF;
+
+            }
+            inFile.close();
+            endOfFile = true;
+        }
+    }else{
+        cout << "Unable to open file" << endl;
+    }
+    string HighScore = to_string(maxi);
+    glColor3f(1.0, 0.1, 0.1);
+    glRasterPos2i(290, 400);
+    for (char c: HighScore) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
 }
 
 /********** INFO ***************/
@@ -228,8 +262,6 @@ void displayGame() {
     }
 
     slowDown(speed, moveUp);
-    thrustSlowDown(leftThrust, thrustLeft);
-    thrustSlowDown(rightThrust, thrustRight);
 
     color c1 = {1.0, 1.0, 0.0};
     for (int i = 0; i < coins.size(); i++) {
@@ -455,10 +487,6 @@ void kbd(unsigned char key, int x, int y) {
 
     if (key == 27) {
         glutDestroyWindow(wd);
-        if (outFile) {
-            outFile << score << "\n";
-        }
-        outFile.close();
         exit(0);
     }
 
@@ -469,8 +497,6 @@ void kbd(unsigned char key, int x, int y) {
     if (screen == game) {
         if (key == 32 && tank.getFuel() > 0) {
             tank.useFuel();
-
-            std::cout << tank.getFuel();
 
             speed = 9;
 
@@ -511,6 +537,12 @@ void kbd(unsigned char key, int x, int y) {
         for(int i = 0; i < planets.size(); ++i){
             planets.erase(planets.begin()+i);
         }
+
+        ofstream outfile("Scores.txt", std::ofstream::app);
+        if (outFile) {
+            outFile << score << "\n";
+        }
+        outFile.close();
 
         switch (key) {
             case 'r':
@@ -557,18 +589,21 @@ void kbd(unsigned char key, int x, int y) {
 
                     //rock.rotate(15);
                     //rock.move(-20, 0);
+                    thrustLeft(leftThrust);
+
 //                    if (rock.getFuelTank().getFuel() == 0 && speed < 0) {
 //                        screen = endgame;
 //                    }
 
                     break;
                 case GLUT_KEY_RIGHT:
-                    //rock.move(30,0);
-                    //rock.rotate(15);
+                    // rock.move(30,0);
+
 //                    if (rock.getFuelTank().getFuel() == 0 && speed == 0) {
 //                        screen = endgame;
 //                    }
                     rightThrust = 17.5;
+                    thrustRight(rightThrust);
                     break;
 
                 case GLUT_KEY_UP:
